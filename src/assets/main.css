@@ -1,13 +1,13 @@
 @font-face {
-  font-family: 'Intro';
-  src: url('@/assets/fonts/Intro.woff2') format('woff2'),
-       url('@/assets/fonts/Intro.woff') format('woff'),
-       url('@/assets/fonts/Intro.ttf') format('truetype');
+  font-family: 'Poppins';
+  src: url('@/assets/fonts/Poppins.woff2') format('woff2'),
+       url('@/assets/fonts/Poppins.woff') format('woff'),
+       url('@/assets/fonts/Poppins.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 body {
-  font-family: 'Intro', sans-serif;
+  font-family: 'Poppins', sans-serif;
   letter-spacing: 2px;
 }
