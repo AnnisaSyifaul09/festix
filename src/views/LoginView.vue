@@ -12,7 +12,7 @@
             <h2 className="text-4xl font-semibold text-violet-900 text-center mb-6">LOGIN</h2>
             <form @submit.prevent="login">
             <div className="mb-4">
-                <label className="block text-lg font-semibold text-violet-900 mb-2">Email</label>
+                <label className="block text-lg font-medium text-indigo-900 mb-2">Email</label>
                 <input 
                 type="email" 
                 v-model="email"
@@ -22,7 +22,7 @@
             </div>
 
             <div className="mb-4">
-                <label className="block text-lg font-semibold text-violet-900 mb-2">Password</label>
+                <label className="block text-lg font-medium text-indigo-900 mb-2">Password</label>
                 <input 
                 type="password" 
                 v-model="password"
@@ -31,14 +31,13 @@
                 />
             </div>
 
-            <p className="text-sm text-violet-900 text-center mb-4">
-                Don't have an account? <a href="#" className="font-semibold">Sign In</a>
+            <p className="text-sm text-indigo-900 text-center mb-4">
+                Don't have an account? <a href="/signin" className="font-semibold">Sign In</a>
             </p>
 
             <button 
                 type="submit" 
-                className="w-full bg-yellow-500 text-white p-2 rounded-full text-lg font-semibold hover:bg-yellow-600 transition duration-300"
-            >
+                className="w-full bg-yellow-500 text-white p-2 rounded-full text-lg font-semibold hover:bg-yellow-600 transition duration-300">
                 Login
             </button>
             </form>
