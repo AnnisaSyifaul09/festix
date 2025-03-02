@@ -1,13 +1,15 @@
+@import "tailwindcss";
+
 @font-face {
-  font-family: 'Poppins';
-  src: url('@/assets/fonts/Poppins.woff2') format('woff2'),
-       url('@/assets/fonts/Poppins.woff') format('woff'),
-       url('@/assets/fonts/Poppins.ttf') format('truetype');
+  font-family: "Poppins";
+  src: url("@/assets/fonts/Poppins.woff2") format("woff2"),
+    url("@/assets/fonts/Poppins.woff") format("woff"),
+    url("@/assets/fonts/Poppins.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   letter-spacing: 2px;
 }
