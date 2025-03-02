@@ -21,7 +21,7 @@
                 />
             </div>
             <p className="text-sm text-indigo-900 text-center mb-4">
-                Click <a href="/signin" className="font-semibold">this</a> if don't receive email.
+                Click <span @click="getToken" className="font-bold">this</span> if don't receive email.
             </p>
             <button 
                 type="submit" 
@@ -57,6 +57,25 @@ export default {
 
                     // Navigate to home page
                     router.push({ name: 'login' });
+                })
+                .catch((error) => {
+                    // Handle errors
+                    if (error.response && error.response.data) {
+                        alert(error.response.data.message);
+                    } else {
+                        console.log('Error:', error.message);
+                    }
+                });
+        },
+        getToken() {
+            const userStore = useUserStore();
+
+            axios
+                .post(`http://127.0.0.1:8000/api/auth/get-token`, {
+                    email: userStore.email,
+                })
+                .then((response) => {
+                    console.log(response);
                 })
                 .catch((error) => {
                     // Handle errors

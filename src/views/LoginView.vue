@@ -49,6 +49,8 @@
 <script>
 import axios from "axios";
 import router from '@/router';
+import { useUserStore } from '@/stores/userStore';
+
 
 export default {
     data() {
@@ -66,6 +68,33 @@ export default {
                 })
                 .then((response) => {
                     console.log(response);
+
+                    if (response.data.data.email_verified_at === null) {
+                        const userStore = useUserStore();
+                        axios
+                            .post('http://127.0.0.1:8000/api/auth/get-token', {
+                                email: response.data.data.email,
+                            })
+                            .then((response) => {
+                                console.log(response);
+
+                                userStore.setUserData(response.data.data);
+
+                                // Navigate to home page
+                                router.push({ name: 'verif' });
+                            })
+                            .catch((error) => {
+                                // Handle errors
+                                if (error.response && error.response.data) {
+                                    alert(error.response.data.message);
+                                } else {
+                                    console.log('Error:', error.message);
+                                }
+                            });
+
+                        return;
+
+                    }
 
                     // Save user data to localStorage
                     localStorage.setItem('email', response.data.data.email);
