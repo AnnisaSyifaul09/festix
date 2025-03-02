@@ -32,6 +32,11 @@ const router = createRouter({
       component: VerificationView,
       props: true,
     },
+    {
+      path: "/home",
+      name: "home",
+      component: HomeView,
+    }
   ],
 });
 

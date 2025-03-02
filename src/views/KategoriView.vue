@@ -1,24 +1,30 @@
 <template>
   <div class="p-6 bg-gray-100 min-h-screen flex flex-col items-center">
     <!-- Navbar -->
-    <nav class="bg-white shadow-md px-6 py-4 flex justify-between items-center w-full fixed top-0 left-0 right-0 z-50 rounded-b-2xl">
-      <!-- Mobile Menu Button (Kiri Atas) -->
-      <button @click="toggleMobileMenu" class="md:hidden text-indigo-900 focus:outline-none text-2xl font-bold">
-        ☰
-      </button>
+    <nav class="bg-white shadow-md px-6 py-4 flex items-center justify-between w-full fixed top-0 left-0 right-0 z-50 rounded-b-2xl">
+      <div class="container mx-auto flex items-center justify-between max-w-screen-xl">
+        
+        <!-- Mobile Menu Button -->
+        <button @click="toggleMobileMenu" class="md:hidden text-indigo-900 focus:outline-none text-2xl font-bold">
+          ☰
+        </button>
 
-      <!-- Menu Kiri -->
-      <div class="hidden md:flex space-x-6">
-        <a href="#" class="font-semibold hover:text-indigo-600 text-indigo-900">HOME</a>
-        <a href="#" class="font-semibold hover:text-indigo-600 text-indigo-900">EVENTS</a>
-        <a href="#" class="font-semibold hover:text-indigo-600 text-indigo-900">PLACES</a>
-      </div>
+        <!-- Menu Kiri -->
+        <div class="hidden md:flex space-x-12">
+          <a href="#" class="font-semibold text-indigo-900 uppercase tracking-wide hover:text-indigo-700 transition-all">Home</a>
+          <a href="#" class="font-semibold text-indigo-900 uppercase tracking-wide hover:text-indigo-700 transition-all">Events</a>
+          <a href="#" class="font-semibold text-indigo-900 uppercase tracking-wide hover:text-indigo-700 transition-all">Places</a>
+        </div>
 
-      <div class="relative">
-        <button @click="toggleDropdown" class="font-semibold hover:text-indigo-600 text-indigo-900">PROFILE ▼</button>
-        <div v-if="dropdownOpen" class="absolute right-0 mt-2 w-40 bg-white shadow-md rounded-md py-2">
-          <a href="#" class="block px-4 py-2 hover:bg-gray-200 text-indigo-900">Settings</a>
-          <a href="#" class="block px-4 py-2 hover:bg-gray-200 text-indigo-900">Logout</a>
+        <!-- Dropdown Profile -->
+        <div class="relative">
+          <button @click="toggleDropdown" class="font-semibold text-indigo-900 uppercase tracking-wide hover:text-indigo-700 transition-all">
+            Profile ▼
+          </button>
+          <div v-if="dropdownOpen" class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2 transition-all transform scale-95 origin-top-right">
+            <a href="#" class="block px-4 py-2 text-indigo-900 hover:bg-indigo-100 hover:text-indigo-700 transition-all">Settings</a>
+            <a href="#" class="block px-4 py-2 text-indigo-900 hover:bg-indigo-100 hover:text-indigo-700 transition-all">Logout</a>
+          </div>
         </div>
       </div>
     </nav>
