@@ -8,7 +8,7 @@ import VerificationView from "@/views/VerificationView.vue";
 import ResetPasswordView from "@/views/ResetPasswordView.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import RiwayatView from "@/views/RiwayatView.vue";
-
+import DetailTiketView from "@/views/DetailTiketView.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -54,6 +54,11 @@ const router = createRouter({
       path: "/riwayat",
       name: "riwayat",
       component: RiwayatView,
+    },
+    {
+      path: "/detail",
+      name: "detail",
+      component: DetailTiketView,
     },
   ],
 });
