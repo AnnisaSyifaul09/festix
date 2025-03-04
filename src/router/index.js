@@ -5,6 +5,7 @@ import KategoriView from "../views/KategoriView.vue";
 import SigninView from "../views/SigninView.vue";
 import WelcomeView from "../views/WelcomeView.vue";
 import VerificationView from "@/views/VerificationView.vue";
+import ResetPasswordView from "@/views/ResetPasswordView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,7 +37,12 @@ const router = createRouter({
       path: "/home",
       name: "home",
       component: HomeView,
-    }
+    },
+    {
+      path: "/resetPassword",
+      name: "resetPassword",
+      component: ResetPasswordView,
+    },
   ],
 });
 

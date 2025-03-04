@@ -71,9 +71,10 @@ export default {
 
                     if (response.data.data.email_verified_at === null) {
                         const userStore = useUserStore();
+                        console.log(this.email);
                         axios
                             .post('http://127.0.0.1:8000/api/auth/get-token', {
-                                email: response.data.data.email,
+                                email: this.email,
                             })
                             .then((response) => {
                                 console.log(response);
@@ -108,7 +109,7 @@ export default {
                 .catch((error) => {
                     // Handle errors
                     if (error.response && error.response.data) {
-                        alert(error.response.data.message);
+                        alert(error.response.errors);
                     } else {
                         console.log('Error:', error.message);
                     }

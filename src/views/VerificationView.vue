@@ -49,7 +49,7 @@ export default {
             const userStore = useUserStore();
 
             axios
-                .post(`http://127.0.0.1:8000/api/auth/${userStore.role_id}/otp-validation`, {
+                .post(`http://127.0.0.1:8000/api/auth/${userStore.id}/otp-validation`, {
                     otp_code: this.token,
                 })
                 .then((response) => {
