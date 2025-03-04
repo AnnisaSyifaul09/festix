@@ -6,6 +6,7 @@ import SigninView from "../views/SigninView.vue";
 import WelcomeView from "../views/WelcomeView.vue";
 import VerificationView from "@/views/VerificationView.vue";
 import ProfileView from "@/views/ProfileView.vue";
+import RiwayatView from "@/views/RiwayatView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,6 +43,11 @@ const router = createRouter({
       path: "/profile",
       name: "profile",
       component: ProfileView,
+    },
+    {
+      path: "/riwayat",
+      name: "riwayat",
+      component: RiwayatView,
     }
   ],
 });
