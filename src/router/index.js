@@ -9,6 +9,10 @@ import ResetPasswordView from "@/views/ResetPasswordView.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import RiwayatView from "@/views/RiwayatView.vue";
 import DetailTiketView from "@/views/DetailTiketView.vue";
+import AdminView from "@/views/admin/AdminView.vue";
+import EventIndex from "@/views/admin/event/EventIndex.vue";
+import VenueIndex from "@/views/admin/venue/VenueIndex.vue";
+import CashIndex from "@/views/admin/cash/CashIndex.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -59,6 +63,26 @@ const router = createRouter({
       path: "/detail",
       name: "detail",
       component: DetailTiketView,
+    },
+    {
+      path: "/admin",
+      name: "dashboard",
+      component: AdminView,
+    },
+    {
+      path: "/admin/events",
+      name: "events",
+      component: EventIndex
+    },
+    {
+      path: "/admin/venues",
+      name: "venues",
+      component: VenueIndex
+    },
+    {
+      path: "/admin/cash",
+      name: "cash",
+      component: CashIndex
     },
   ],
 });
