@@ -13,6 +13,8 @@ import AdminView from "@/views/admin/AdminView.vue";
 import EventIndex from "@/views/admin/event/EventIndex.vue";
 import VenueIndex from "@/views/admin/venue/VenueIndex.vue";
 import CashIndex from "@/views/admin/cash/CashIndex.vue";
+import DetailEventView from "@/views/DetailEventView.vue";
+import PaymentConfirmView from "@/views/PaymentConfirmView.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -65,6 +67,16 @@ const router = createRouter({
       component: DetailTiketView,
     },
     {
+      path: "/events/:id",
+      name: "detailEvent",
+      component: DetailEventView,
+    },
+    {
+      path: "/payment-confirmation",
+      name: "paymentConfirmation",
+      component: PaymentConfirmView,
+    },
+    {
       path: "/admin",
       name: "dashboard",
       component: AdminView,
@@ -72,17 +84,17 @@ const router = createRouter({
     {
       path: "/admin/events",
       name: "events",
-      component: EventIndex
+      component: EventIndex,
     },
     {
       path: "/admin/venues",
       name: "venues",
-      component: VenueIndex
+      component: VenueIndex,
     },
     {
       path: "/admin/cash",
       name: "cash",
-      component: CashIndex
+      component: CashIndex,
     },
   ],
 });

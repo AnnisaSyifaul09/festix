@@ -32,12 +32,8 @@
           <!-- Categories & Price Row -->
           <div class="flex justify-between items-center mt-3">
             <div class="flex flex-wrap gap-2">
-              <button
-                v-for="(seat, index) in seatCategories"
-                :key="index"
-                @click="selectCategory(seat)"
-                :class="['px-3 py-1 text-sm rounded-md font-medium', 
-                         seat.available > 0 ? 'cursor-pointer' : 'cursor-not-allowed opacity-100']"
+              <button v-for="(seat, index) in seatCategories" :key="index" @click="selectCategory(seat)" :class="['px-3 py-1 text-sm rounded-md font-medium',
+                seat.available > 0 ? 'cursor-pointer' : 'cursor-not-allowed opacity-100']"
                 :style="{ backgroundColor: seat.available > 0 ? (selectedCategory === seat.name ? '#FFD700' : '#37FF30') : '#FF3030', color: seat.available > 0 ? 'black' : 'white' }">
                 {{ seat.name }} ({{ seat.available }})
               </button>
