@@ -62,7 +62,7 @@ const router = createRouter({
       component: RiwayatView,
     },
     {
-      path: "/detail",
+      path: "/detail/:id",
       name: "detail",
       component: DetailTiketView,
     },

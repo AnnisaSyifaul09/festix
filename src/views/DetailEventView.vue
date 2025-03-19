@@ -83,7 +83,7 @@
                     </div>
 
                     <!-- Tombol Buy hanya muncul jika quantity lebih dari 0 -->
-                    <button v-if="quantity > 0"
+                    <button v-if="selectedCategory.remaining_seat > 0"
                         class="w-full py-2 bg-[#37FF30] rounded-lg hover:bg-green-600 transition-all"
                         v-on:click="buy()">Buy</button>
                 </div>
@@ -137,7 +137,12 @@
                 </div>
                 <div class="flex justify-end mt-4 gap-2">
                     <button class="px-4 py-2 bg-gray-300 rounded-lg" @click="showModal = false">Batal</button>
-                    <button class="px-4 py-2 bg-green-500 text-white rounded-lg" @click="payments()">Konfirmasi</button>
+                    <button class="px-4 py-2 bg-green-500 text-white rounded-lg" @click="payments()"
+                        :disabled="isProcessing">
+                        <span v-if="isProcessing"
+                            class="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5 inline-block mr-2"></span>
+                        Konfirmasi
+                    </button>
                 </div>
             </div>
         </div>
@@ -195,7 +200,8 @@ export default {
             totalPayment: 0,
             resultJson: "",
             snapToken: "",
-            payment: ""
+            payment: "",
+            isProcessing: false,
         };
     },
     computed: {
@@ -264,6 +270,8 @@ export default {
             this.showModal = true;
         },
         payments() {
+            this.isProcessing = true;
+
             console.log(this.selectedCategory)
             let formData = new FormData();
             formData.append("quantity", this.quantity);

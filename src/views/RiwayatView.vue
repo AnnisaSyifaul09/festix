@@ -5,27 +5,24 @@
       <div class="pt-15 p-2 min-h-screen flex flex-col">
         <h1 class="text-2xl font-bold text-indigo-900 mb-8 text-left">TICKET HISTORY</h1>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-10 w-full max-w-4xl mx-auto justify-items-center">
-          <TicketCard 
-            v-for="(ticket, index) in tickets" 
-            :key="index" 
-            :image="ticket.image" 
-            :title="ticket.title" 
-            :date="ticket.date" 
-            :time="ticket.time" 
-            :location="ticket.location" 
-          />
+          <TicketCard v-for="(ticket, index) in data" :key="index" :image="tickets[0].image"
+            :title="ticket.event_price.event.name" :date="ticket.event_price.event.date"
+            :time="ticket.event_price.event.time.split(' ')[1].slice(0, 5)" :location="tickets[0].location"
+            :id="ticket.id" />
         </div>
       </div>
     </section>
   </div>
 </template>
-  
+
 <script>
 import NavbarItem from "@/components/NavbarItem.vue";
 import TicketCard from "@/components/TicketCard.vue";
 import IconDate from "@/components/icons/IconDate.vue";
 import IconTime from "@/components/icons/IconTime.vue";
 import IconLocation from "@/components/icons/IconLocation.vue";
+import axios from "axios";
+import router from "@/router";
 
 export default {
   components: {
@@ -53,7 +50,25 @@ export default {
           location: "Teater Taman Sriwedari",
         },
       ],
+      data: ""
     };
   },
+  mounted() {
+    this.getItem();
+  },
+  methods: {
+    getItem() {
+      axios.get(`http://localhost:8000/api/history-tickets`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }).then((res) => {
+        console.log(res.data.data)
+        this.data = res.data.data
+      }).catch((err) => {
+        console.log(err);
+      });
+    }
+  }
 };
 </script>

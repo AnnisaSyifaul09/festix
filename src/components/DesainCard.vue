@@ -5,18 +5,21 @@
       <h2 class="card-title">{{ title }}</h2>
       <div class="details">
         <p>
-          <IconDate class="icon"/> {{ date }}
+          <IconDate class="icon" /> {{ date }}
         </p>
         <p>
-          <IconTime class="icon"/> {{ time }}
+          <IconTime class="icon" /> {{ time }}
         </p>
         <p>
-          <IconLocation class="icon"/> {{ location }}
+          <IconLocation class="icon" /> {{ location }}
         </p>
       </div>
       <div class="footer">
-        <p class="font-bold text-lg">VIP 1 | 10</p>
-        <img :src="qrCode" alt="QR Code">
+        <div class="">
+          <p class="font-bold text-lg">{{ category }}</p>
+          <p class="font-bold text-lg">{{ seatNumber }}</p>
+        </div>
+        <QrCode :qrCode="qrCode" />
       </div>
     </div>
   </div>
@@ -26,6 +29,7 @@
 import IconDate from "@/components/icons/IconDate.vue";
 import IconTime from "@/components/icons/IconTime.vue";
 import IconLocation from "@/components/icons/IconLocation.vue";
+import QrCode from "@/components/QrCode.vue";
 
 export default {
   props: {
@@ -35,11 +39,14 @@ export default {
     time: String,
     location: String,
     qrCode: String,
+    category: String,
+    seatNumber: String
   },
   components: {
     IconDate,
     IconTime,
     IconLocation,
+    QrCode,
   }
 };
 </script>
@@ -58,21 +65,25 @@ export default {
   flex-direction: column;
   min-height: 450px;
 }
+
 .card img {
   width: 100%;
   height: 160px;
   object-fit: cover;
 }
+
 .card-body {
   padding: 16px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
+
 .card-title {
   font-size: 1.25rem;
   font-weight: bold;
 }
+
 .badge {
   background: black;
   color: white;
@@ -82,25 +93,30 @@ export default {
   display: inline-block;
   margin-top: 8px;
 }
+
 .details {
   margin-top: 8px;
   font-size: 0.875rem;
 }
+
 .details p {
   display: flex;
   align-items: center;
   gap: 8px;
 }
+
 .icon {
   width: 20px;
   height: 20px;
 }
+
 .footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: auto;
 }
+
 .footer img {
   width: 80px;
   height: 80px;
