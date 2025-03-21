@@ -64,13 +64,13 @@
                     <div class="grid grid-cols-2 w-full">
                         <div class="flex w-full gap-2">
                             <button
-                                class="w-10 h-10 border border-slate-800 rounded-lg flex items-center justify-center text-lg"
+                                class="px-1 w-10 h-10 border border-slate-800 rounded-lg flex items-center justify-center text-lg"
                                 @click="subtract">-</button>
                             <input type="number"
                                 class="w-20 p-2 text-center border border-slate-800 rounded-lg no-spinner"
                                 v-model="quantity" />
                             <button
-                                class="w-10 h-10 border border-slate-800 rounded-lg flex items-center justify-center text-lg"
+                                class="px-1 w-10 h-10 border border-slate-800 rounded-lg flex items-center justify-center text-lg"
                                 @click="add">+</button>
                         </div>
                         <div class="w-full flex items-center justify-end font-semibold">
@@ -89,8 +89,8 @@
                 </div>
             </div>
         </div>
-        <div v-if="showModal" class="fixed inset-0 flex items-center justify-center bg-black/75 ">
-            <div class="bg-white p-6 rounded-lg w-96">
+        <div v-if="showModal" class="px-4 fixed inset-0 flex items-center justify-center bg-black/75 ">
+            <div class="bg-white p-6 rounded-lg w-full md:w-1/3">
                 <h2 class="text-xl font-semibold mb-4">Payment Confirmation</h2>
                 <hr>
                 <h1 class="text-4xl font-semibold">{{ event.name }}</h1>
@@ -121,7 +121,7 @@
                     </div>
                     <div class="flex justify-between">
                         <h5>PPN 10%</h5>
-                        <h5>{{ formatToIDR(price * quantity) }}</h5>
+                        <h5>{{ formatToIDR(ppn) }}</h5>
                     </div>
                     <div class="flex justify-between">
                         <h5>Admin</h5>
@@ -130,7 +130,7 @@
 
                 </div>
 
-                <div class="flex justify-between p-2">
+                <div class="flex justify-between p-2 text-2xl font-semibold my-4">
                     <p>Total</p>
                     <p>{{ formatToIDR(totalPay) }}</p>
 
@@ -201,6 +201,7 @@ export default {
             resultJson: "",
             snapToken: "",
             payment: "",
+            ppn: "",
             isProcessing: false,
         };
     },
@@ -209,8 +210,8 @@ export default {
             return this.price * this.quantity;
         },
         totalPay() {
-            this.totalPayment = this.price * this.quantity + this.admin
-            return this.price * this.quantity + this.admin;
+            this.totalPayment = this.price * this.quantity + this.admin + this.ppn
+            return this.price * this.quantity + this.admin + this.ppn;
         }
     },
     mounted() {
@@ -221,6 +222,7 @@ export default {
         script.src = "https://app.sandbox.midtrans.com/snap/snap.js";
         script.setAttribute("data-client-key", "client"); // Ganti dengan ClientKey
         document.body.appendChild(script);
+
     },
     methods: {
         formatToIDR(value) {
@@ -268,6 +270,7 @@ export default {
         },
         buy() {
             this.showModal = true;
+            this.ppn = this.totalPrice * 0.1
         },
         payments() {
             this.isProcessing = true;
