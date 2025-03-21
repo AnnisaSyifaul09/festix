@@ -2,7 +2,7 @@
     <div>
         <NavbarAdmin></NavbarAdmin>
 
-        <section class="mt-20 px-4">
+        <section class="container mx-auto mt-20 px-4 md:w-1/2">
             <div class="text-lg font-semibold mb-4">Scan QR Code</div>
             <div class="flex gap-2 mb-4 rounded-lg overflow-hidden">
                 <div id="qr-reader"></div>
@@ -14,9 +14,9 @@
                 <button class="px-4 py-2 border rounded-lg active:bg-slate-500" @click="submit">Submit</button>
             </div>
         </section>
-
+        <!-- 
         <h2>QR Code Scanner</h2>
-        <p>Scanned Result: {{ code }}</p>
+        <p>Scanned Result: {{ code }}</p> -->
 
         <transition name="fade" class="mt-15">
             <div v-if="alertMessage" :class="alertClass"
@@ -75,10 +75,25 @@ export default {
 
         const onScanSuccess = (decodedText) => {
             code.value = decodedText;
+
+            axios.post("http://localhost:8000/api/verify-ticket", { code: code.value }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => {
+                    console.log(res.data);
+                    showAlert("✅ Success", "bg-green-200");
+                })
+                .catch((err) => {
+                    console.error(err);
+                    showAlert("❌ Failed", "bg-red-200");
+                });
         };
 
         const onScanFailure = (error) => {
-            console.warn(`QR Code scan failed: ${error}`);
+            // console.warn(`QR Code scan failed: ${error}`);
         };
 
         onMounted(() => {
