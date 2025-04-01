@@ -4,11 +4,11 @@
     <section class="py-12 px-6 md:px-0 max-w-screen-xl mx-auto">
       <div class="pt-15 p-2 min-h-screen flex flex-col">
         <h1 class="text-2xl font-bold text-indigo-900 mb-8 text-left">TICKET HISTORY</h1>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 w-full max-w-4xl mx-auto justify-items-center">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 w-full  mx-auto justify-items-center">
           <TicketCard v-for="(ticket, index) in data" :key="index" :image="tickets[0].image"
             :title="ticket.event_price.event.name" :date="ticket.event_price.event.date"
             :time="ticket.event_price.event.time.split(' ')[1].slice(0, 5)" :location="tickets[0].location"
-            :id="ticket.id" />
+            :id="ticket.id" :status="ticket.status" />
         </div>
       </div>
     </section>

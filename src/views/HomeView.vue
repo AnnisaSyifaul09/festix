@@ -21,7 +21,7 @@
     <section class="py-12 px-6 md:px-0 max-w-screen-xl mx-auto">
       <h2 class="text-indigo-900 text-2xl font-bold mb-2">OUR EVENTS</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <EventCard v-for="event in data_events" :key="event" :name="event.name" :venue="event.vanue.name"
+        <EventCard v-for="event in limitedEvents" :key="event" :name="event.name" :venue="event.vanue.name"
           :date="event.date" :time="event.time" />
       </div>
     </section>
@@ -44,7 +44,6 @@ import NavbarItem from "@/components/NavbarItem.vue";
 import VenueCard from "@/components/VenueCard.vue";
 import axios from "axios";
 
-
 export default {
   components: {
     EventCard, VenueCard, NavbarItem
@@ -55,6 +54,12 @@ export default {
       data_events: {},
     };
   },
+  computed: {
+    limitedEvents() {
+      // Pastikan data_events adalah array sebelum menggunakan slice
+      return Array.isArray(this.data_events) ? this.data_events.slice(0, 6) : [];
+    }
+  },
   mounted() {
     this.eventId = this.$route.params.id;
     this.getItem();
@@ -63,7 +68,6 @@ export default {
     script.src = "https://app.sandbox.midtrans.com/snap/snap.js";
     script.setAttribute("data-client-key", "client"); // Ganti dengan ClientKey
     document.body.appendChild(script);
-
   },
   methods: {
     getItem() {
