@@ -1,16 +1,18 @@
 <template>
-<div>
+  <div>
     <div class="relative w-full h-180">
-    <NavbarItem></NavbarItem>
+      <NavbarItem></NavbarItem>
       <img src="@/assets/konser1.jpg" class="w-full h-full object-cover" />
       <div class="absolute inset-0 bg-black opacity-50"></div>
 
       <div class="absolute inset-0 flex flex-col justify-center items-center text-white px-6">
         <h1 class="text-4xl md:text-3xl lg:text-5xl font-semibold tracking-wide text-center">ROCK AND ROLLSS</h1>
         <p class="text-base md:text-sm lg:text-lg mt-2 font-medium max-w-4xl text-justify">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse euismod, justo at viverra eleifend, lectus urna tristique erat, vel fermentum eros ipsum non ex.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse euismod, justo at viverra eleifend,
+          lectus urna tristique erat, vel fermentum eros ipsum non ex.
         </p>
-        <button class="mt-4 border border-white text-white px-6 py-2 rounded-md hover:bg-white hover:text-black transition-all">
+        <button
+          class="mt-4 border border-white text-white px-6 py-2 rounded-md hover:bg-white hover:text-black transition-all">
           Buy Ticket
         </button>
       </div>
@@ -18,15 +20,17 @@
 
     <section class="py-12 px-6 md:px-0 max-w-screen-xl mx-auto">
       <h2 class="text-indigo-900 text-2xl font-bold mb-2">OUR EVENTS</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <EventCard v-for="n in 4" :key="n" />
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <EventCard v-for="event in data_events" :key="event" :name="event.name" :venue="event.vanue.name"
+          :date="event.date" :time="event.time" />
       </div>
     </section>
 
     <section class="py-12 px-6 md:px-0 max-w-screen-xl mx-auto">
       <h2 class="text-indigo-900 text-2xl font-bold mb-2">VENUES</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <VenueCard v-for="n in 2" :key="n" />
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <VenueCard v-for="venue in data" :key="venue" :name="venue.name" :address="venue.address"
+          :image="Array.isArray(venue.venue_image) && venue.venue_image.length > 0 ? venue.venue_image[0].link : ''" />
       </div>
     </section>
 
@@ -38,10 +42,57 @@
 import EventCard from "@/components/EventCard.vue";
 import NavbarItem from "@/components/NavbarItem.vue";
 import VenueCard from "@/components/VenueCard.vue";
+import axios from "axios";
+
 
 export default {
-  components: { 
-    EventCard, VenueCard, NavbarItem 
+  components: {
+    EventCard, VenueCard, NavbarItem
+  },
+  data() {
+    return {
+      data: {},
+      data_events: {},
+    };
+  },
+  mounted() {
+    this.eventId = this.$route.params.id;
+    this.getItem();
+
+    const script = document.createElement("script");
+    script.src = "https://app.sandbox.midtrans.com/snap/snap.js";
+    script.setAttribute("data-client-key", "client"); // Ganti dengan ClientKey
+    document.body.appendChild(script);
+
+  },
+  methods: {
+    getItem() {
+      axios.get(`http://localhost:8000/api/venues`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }).then((res) => {
+        if (res.data?.data) {
+          console.log(res.data.data)
+          this.data = res.data.data;
+        }
+      }).catch((err) => {
+        console.error("Error fetching ticket data:", err);
+      });
+
+      axios.get(`http://localhost:8000/api/events`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }).then((res) => {
+        if (res.data?.data) {
+          console.log(res.data.data)
+          this.data_events = res.data.data;
+        }
+      }).catch((err) => {
+        console.error("Error fetching ticket data:", err);
+      });
+    }
   }
 };
 </script>

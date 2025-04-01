@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gray-100">
     <NavbarItem />
     <div class="flex flex-col items-center justify-center min-h-screen p-20">
-      <h1 class="text-3xl font-bold text-black mb-5">Design Ticket</h1>
+      <h1 class="text-3xl font-bold text-black mb-5">Ticket</h1>
       <DesainCard v-if="data.event_price" :title="data?.event_price?.event?.name" :date="data?.event_price?.event?.date"
         :time="data?.event_price?.event?.time?.split(' ')[1]?.slice(0, 5)"
         :location="data.event_price?.event?.vanue?.name" :category="data?.event_price?.seat_category?.name"

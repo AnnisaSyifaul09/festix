@@ -2,7 +2,7 @@
     <div class="min-h-screen bg-gray-100">
         <NavbarItem />
         <div class="container mx-auto w-full min-h-screen py-20 px-4 md:w-3/4">
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-[2fr_1fr]">
+            <div class="grid grid-cols-1 gap-10 md:grid-cols-[2fr_1fr]">
                 <div>
                     <div class="rounded-md overflow-hidden">
                         <img class="aspect-video object-cover w-full" :src="ticket.image" alt="Event Image" />
@@ -23,70 +23,81 @@
                         <IconLocation class="w-5 h-5 text-black" />
                         {{ ticket.location }}
                     </p>
-                    <div class="w-full flex flex-wrap gap-3 mt-5">
+                    <!-- <div class="w-full flex flex-wrap gap-3 mt-5">
                         <div class="px-5 py-1 rounded-lg"
                             :class="item.remaining_seat !== 0 ? 'bg-[#37FF30]' : 'bg-[#FF3030]'"
                             v-for="(item, index) in category" :key="index">
                             {{ item.name }}
                         </div>
-                    </div>
+                    </div> -->
 
                     <hr class="my-5">
 
                     <div class="">
-                        <div class="grid grid-cols-2" v-for="(item, index) in category" :key="index">
+                        <div class="relative grid grid-cols-2 mb-5 border rounded-lg px-2 py-5"
+                            v-for="(item, index) in category" :key="index">
                             <h4 class="text-lg font-semibold">{{ item.name }}</h4>
                             <h4 class="text-lg font-semibold text-end">{{ formatToIDR(item.price) }}</h4>
+                            <span class="absolute -top-4 right-3 rounded-lg py-1 px-4 "
+                                :class="item.remaining_seat !== 0 ? 'bg-[#37FF30]' : 'bg-[#FF3030]'">{{
+                                    item.remaining_seat !== 0 ? "Available" : "Sold" }}</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-4 border p-5 rounded-lg border-slate-500 bg-white h-max md:mt-0">
-                    <h2 class="font-semibold my-2">Category Seat</h2>
+                <div class="">
+                    <div class="mt-4 border p-5 rounded-lg border-slate-500 bg-white h-max md:mt-0">
+                        <h2 class="font-semibold my-2">Category Seat</h2>
 
-                    <!-- Dropdown dengan Tailwind -->
-                    <div class="relative w-full">
-                        <button @click="toggleDropdown"
-                            class="w-full bg-white border border-slate-800 px-3 py-2 rounded-lg flex justify-between items-center">
-                            {{ selectedCategory.name || "Select Category" }}
-                            <span class="material-icons"></span>
-                        </button>
-                        <div v-if="isDropdownOpen"
-                            class="absolute w-full bg-white border border-slate-300 rounded-lg shadow-md mt-1">
-                            <div v-for="(item, index) in category" :key="index" @click="selectCategory(item)"
-                                class="px-4 py-2 hover:bg-gray-200 cursor-pointer">
-                                {{ item.name }}
+                        <!-- Dropdown dengan Tailwind -->
+                        <div class="relative w-full">
+                            <button @click="toggleDropdown"
+                                class="w-full bg-white border border-slate-800 px-3 py-2 rounded-lg flex justify-between items-center">
+                                {{ selectedCategory.name || "Select Category" }}
+                                <span class="material-icons"></span>
+                            </button>
+                            <div v-if="isDropdownOpen"
+                                class="absolute w-full bg-white border border-slate-300 rounded-lg shadow-md mt-1">
+                                <div v-for="(item, index) in category" :key="index" @click="selectCategory(item)"
+                                    class="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+                                    {{ item.name }}
+                                </div>
                             </div>
                         </div>
+
+                        <h2 class="font-semibold my-2">Quantity</h2>
+                        <div class="grid grid-cols-2 w-full">
+                            <div class="flex w-full gap-2">
+                                <button
+                                    class="px-1 w-10 h-10 border border-slate-800 rounded-lg flex items-center justify-center text-lg"
+                                    @click="subtract">-</button>
+                                <input type="number"
+                                    class="w-20 p-2 text-center border border-slate-800 rounded-lg no-spinner"
+                                    v-model="quantity" />
+                                <button
+                                    class="px-1 w-10 h-10 border border-slate-800 rounded-lg flex items-center justify-center text-lg"
+                                    @click="add">+</button>
+                            </div>
+                            <div class="w-full flex items-center justify-end font-semibold">
+                                <h5>Stock: <span>{{ selectedCategory.remaining_seat || 0 }}</span></h5>
+                            </div>
+                        </div>
+                        <div class="flex justify-between text-2xl font-semibold my-2">
+                            <h5>Total</h5>
+                            <h5>{{ formatToIDR(totalPrice) }}</h5>
+                        </div>
+
+                        <!-- Tombol Buy hanya muncul jika quantity lebih dari 0 -->
+                        <button v-if="selectedCategory.remaining_seat > 0"
+                            class="w-full py-2 bg-[#37FF30] rounded-lg hover:bg-green-600 transition-all"
+                            v-on:click="buy()">Buy</button>
                     </div>
 
-                    <h2 class="font-semibold my-2">Quantity</h2>
-                    <div class="grid grid-cols-2 w-full">
-                        <div class="flex w-full gap-2">
-                            <button
-                                class="px-1 w-10 h-10 border border-slate-800 rounded-lg flex items-center justify-center text-lg"
-                                @click="subtract">-</button>
-                            <input type="number"
-                                class="w-20 p-2 text-center border border-slate-800 rounded-lg no-spinner"
-                                v-model="quantity" />
-                            <button
-                                class="px-1 w-10 h-10 border border-slate-800 rounded-lg flex items-center justify-center text-lg"
-                                @click="add">+</button>
-                        </div>
-                        <div class="w-full flex items-center justify-end font-semibold">
-                            <h5>Stock: <span>{{ selectedCategory.remaining_seat || 0 }}</span></h5>
-                        </div>
+                    <div class="">
+                        <div class="w-full h-99 bg-amber-100 mt-5 rounded-lg"></div>
                     </div>
-                    <div class="flex justify-between text-2xl font-semibold my-2">
-                        <h5>Total</h5>
-                        <h5>{{ formatToIDR(totalPrice) }}</h5>
-                    </div>
-
-                    <!-- Tombol Buy hanya muncul jika quantity lebih dari 0 -->
-                    <button v-if="selectedCategory.remaining_seat > 0"
-                        class="w-full py-2 bg-[#37FF30] rounded-lg hover:bg-green-600 transition-all"
-                        v-on:click="buy()">Buy</button>
                 </div>
+
             </div>
         </div>
         <div v-if="showModal" class="px-4 fixed inset-0 flex items-center justify-center bg-black/75 ">
@@ -203,6 +214,7 @@ export default {
             payment: "",
             ppn: "",
             isProcessing: false,
+            clientkey: import.meta.env.VITE_MIDTRANS_CLIENT_KEY
         };
     },
     computed: {

@@ -14,7 +14,7 @@
           <IconLocation class="icon" /> {{ location }}
         </p>
       </div>
-      <div class="footer">
+      <div class="flex justify-between items-end mt-15">
         <div class="">
           <p class="font-bold text-lg">{{ category }}</p>
           <p class="font-bold text-lg">{{ seatNumber }}</p>
