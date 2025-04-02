@@ -1,12 +1,13 @@
 <template>
-  <div class="min-h-screen bg-gray-100">
+  <div class="min-h-screen ">
     <NavbarItem />
     <div class="flex flex-col items-center justify-center min-h-screen p-20">
       <h1 class="text-3xl font-bold text-black mb-5">Ticket</h1>
       <DesainCard v-if="data.event_price" :title="data?.event_price?.event?.name" :date="data?.event_price?.event?.date"
         :time="data?.event_price?.event?.time?.split(' ')[1]?.slice(0, 5)"
         :location="data.event_price?.event?.vanue?.name" :category="data?.event_price?.seat_category?.name"
-        :seatNumber="data?.seat_number" :qrCode="data?.code" />
+        :seatNumber="data?.seat_number" :qrCode="data?.code"
+        :image="Array.isArray(data.event_price.event.event_image) && data.event_price.event.event_image.length > 0 ? data.event_price.event.event_image[0].link : ''" />
     </div>
   </div>
 </template>

@@ -7,6 +7,9 @@
         ☰
       </button>
 
+      <!-- Logo -->
+      <!-- <a href="/home" class="text-indigo-900 text-2xl font-bold">Logo</a> -->
+
       <!-- Menu Kiri -->
       <div class="hidden md:flex space-x-12">
         <a href="/home"

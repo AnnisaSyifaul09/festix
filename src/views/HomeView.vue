@@ -4,7 +4,6 @@
       <NavbarItem></NavbarItem>
       <img src="@/assets/konser1.jpg" class="w-full h-full object-cover" />
       <div class="absolute inset-0 bg-black opacity-50"></div>
-
       <div class="absolute inset-0 flex flex-col justify-center items-center text-white px-6">
         <h1 class="text-4xl md:text-3xl lg:text-5xl font-semibold tracking-wide text-center">ROCK AND ROLLSS</h1>
         <p class="text-base md:text-sm lg:text-lg mt-2 font-medium max-w-4xl text-justify">
@@ -20,7 +19,10 @@
 
     <section class="py-12 px-6 md:px-0 max-w-screen-xl mx-auto">
       <h2 class="text-indigo-900 text-2xl font-bold mb-2">OUR EVENTS</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div v-if="isLoading" class="flex justify-center items-center h-32">
+        <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-indigo-900"></div>
+      </div>
+      <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <EventCard v-for="event in limitedEvents" :key="event" :name="event.name" :venue="event.vanue.name"
           :date="event.date" :time="event.time"
           :image="Array.isArray(event.event_image) && event.event_image.length > 0 ? event.event_image[0].link : ''" />
@@ -29,7 +31,10 @@
 
     <section class="py-12 px-6 md:px-0 max-w-screen-xl mx-auto">
       <h2 class="text-indigo-900 text-2xl font-bold mb-2">VENUES</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div v-if="isLoading" class="flex justify-center items-center h-32">
+        <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-indigo-900"></div>
+      </div>
+      <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <VenueCard v-for="venue in data" :key="venue" :name="venue.name" :address="venue.address"
           :image="Array.isArray(venue.venue_image) && venue.venue_image.length > 0 ? venue.venue_image[0].link : ''" />
       </div>
@@ -53,18 +58,16 @@ export default {
     return {
       data: {},
       data_events: {},
+      isLoading: true,
     };
   },
   computed: {
     limitedEvents() {
-      // Pastikan data_events adalah array sebelum menggunakan slice
       return Array.isArray(this.data_events) ? this.data_events.slice(0, 6) : [];
     }
   },
   mounted() {
-    this.eventId = this.$route.params.id;
     this.getItem();
-
     const script = document.createElement("script");
     script.src = "https://app.sandbox.midtrans.com/snap/snap.js";
     script.setAttribute("data-client-key", "client"); // Ganti dengan ClientKey
@@ -72,13 +75,13 @@ export default {
   },
   methods: {
     getItem() {
+      this.isLoading = true;
       axios.get(`http://localhost:8000/api/venues`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       }).then((res) => {
         if (res.data?.data) {
-          console.log(res.data.data)
           this.data = res.data.data;
         }
       }).catch((err) => {
@@ -91,11 +94,12 @@ export default {
         },
       }).then((res) => {
         if (res.data?.data) {
-          console.log(res.data.data)
           this.data_events = res.data.data;
         }
       }).catch((err) => {
         console.error("Error fetching ticket data:", err);
+      }).finally(() => {
+        this.isLoading = false;
       });
     }
   }

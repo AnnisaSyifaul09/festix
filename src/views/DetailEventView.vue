@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen bg-gray-100">
+    <div class="min-h-screen ">
         <NavbarItem />
         <div class="container mx-auto w-full min-h-screen py-20 px-4 md:w-3/4">
             <div class="grid grid-cols-1 gap-10 md:grid-cols-[2fr_1fr]">
@@ -7,20 +7,20 @@
                     <div class="rounded-md overflow-hidden">
                         <img class="aspect-video object-cover w-full" :src="ticket.image" alt="Event Image" />
                     </div>
-                    <h1 class="text-4xl font-semibold">{{ event.name }}</h1>
+                    <h1 class="text-4xl text-indigo-900 font-semibold mt-4">{{ event.name }}</h1>
                     <div class="mt-2 flex flex-wrap gap-5">
                         <p class="flex items-center gap-2">
-                            <IconDate class="w-5 h-5 text-black" />
+                            <IconDate class="w-5 h-5 text-indigo-900" />
                             {{ event.date }}
                         </p>
                         <p class="flex items-center gap-2">
-                            <IconTime class="w-5 h-5 text-black" />
+                            <IconTime class="w-5 h-5 text-indigo-900" />
                             {{ event.time?.split(" ")[1].slice(0, 5) }}
                         </p>
 
                     </div>
                     <p class="flex items-center gap-2">
-                        <IconLocation class="w-5 h-5 text-black" />
+                        <IconLocation class="w-5 h-5 text-indigo-900" />
                         {{ ticket.location }}
                     </p>
                     <!-- <div class="w-full flex flex-wrap gap-3 mt-5">
@@ -31,13 +31,14 @@
                         </div>
                     </div> -->
 
-                    <hr class="my-5">
+                    <hr class="my-7">
 
                     <div class="">
-                        <div class="relative grid grid-cols-2 mb-5 border rounded-lg px-2 py-5"
+                        <div class="relative grid grid-cols-2 mb-8 bg-white shadow-lg rounded-lg px-2 py-5"
                             v-for="(item, index) in category" :key="index">
-                            <h4 class="text-lg font-semibold">{{ item.name }}</h4>
-                            <h4 class="text-lg font-semibold text-end">{{ formatToIDR(item.price) }}</h4>
+                            <h4 class="text-lg font-semibold text-indigo-900">{{ item.name }}</h4>
+                            <h4 class="text-lg font-semibold text-indigo-900 text-end">{{ formatToIDR(item.price) }}
+                            </h4>
                             <span class="absolute -top-4 right-3 rounded-lg py-1 px-4 "
                                 :class="item.remaining_seat !== 0 ? 'bg-[#37FF30]' : 'bg-[#FF3030]'">{{
                                     item.remaining_seat !== 0 ? "Available" : "Sold" }}</span>
@@ -46,13 +47,13 @@
                 </div>
 
                 <div class="">
-                    <div class="mt-4 border p-5 rounded-lg border-slate-500 bg-white h-max md:mt-0">
-                        <h2 class="font-semibold my-2">Category Seat</h2>
+                    <div class="mt-4 shadow-lg p-5 rounded-lg  bg-white h-max md:mt-0">
+                        <h2 class="font-semibold text-indigo-900 my-2">Category Seat</h2>
 
                         <!-- Dropdown dengan Tailwind -->
                         <div class="relative w-full">
                             <button @click="toggleDropdown"
-                                class="w-full bg-white border border-slate-800 px-3 py-2 rounded-lg flex justify-between items-center">
+                                class="w-full bg-white border border-slate-400 px-3 py-2 rounded-lg flex justify-between items-center">
                                 {{ selectedCategory.name || "Select Category" }}
                                 <span class="material-icons"></span>
                             </button>
@@ -65,25 +66,25 @@
                             </div>
                         </div>
 
-                        <h2 class="font-semibold my-2">Quantity</h2>
+                        <h2 class="font-semibold text-indigo-900 my-2">Quantity</h2>
                         <div class="grid grid-cols-2 w-full">
                             <div class="flex w-full gap-2">
                                 <button
-                                    class="px-1 w-10 h-10 border border-slate-800 rounded-lg flex items-center justify-center text-lg"
+                                    class="px-1 w-10 h-10 border border-slate-400 rounded-lg flex items-center justify-center text-lg"
                                     @click="subtract">-</button>
                                 <input type="number"
-                                    class="w-20 p-2 text-center border border-slate-800 rounded-lg no-spinner"
+                                    class="w-20 p-2 text-center border border-slate-400 rounded-lg no-spinner"
                                     v-model="quantity" />
                                 <button
-                                    class="px-1 w-10 h-10 border border-slate-800 rounded-lg flex items-center justify-center text-lg"
+                                    class="px-1 w-10 h-10 border border-slate-400 rounded-lg flex items-center justify-center text-lg"
                                     @click="add">+</button>
                             </div>
-                            <div class="w-full flex items-center justify-end font-semibold">
+                            <div class="w-full flex items-center justify-end font-semibold text-indigo-900">
                                 <h5>Stock: <span>{{ selectedCategory.remaining_seat || 0 }}</span></h5>
                             </div>
                         </div>
-                        <div class="flex justify-between text-2xl font-semibold my-2">
-                            <h5>Total</h5>
+                        <div class="flex text-indigo-900 justify-between text-2xl font-semibold my-2">
+                            <h5 class="">Total</h5>
                             <h5>{{ formatToIDR(totalPrice) }}</h5>
                         </div>
 
@@ -107,17 +108,17 @@
                 <h1 class="text-4xl font-semibold">{{ event.name }}</h1>
                 <div class="mt-2 flex flex-wrap gap-5">
                     <p class="flex items-center gap-2">
-                        <IconDate class="w-5 h-5 text-black" />
+                        <IconDate class="w-5 h-5 text-indigo-900" />
                         {{ event.date }}
                     </p>
                     <p class="flex items-center gap-2">
-                        <IconTime class="w-5 h-5 text-black" />
+                        <IconTime class="w-5 h-5 text-indigo-900" />
                         {{ event.time.split(" ")[1].slice(0, 5) }}
                     </p>
 
                 </div>
                 <p class="flex items-center gap-2">
-                    <IconLocation class="w-5 h-5 text-black" />
+                    <IconLocation class="w-5 h-5 text-indigo-900" />
                     {{ ticket.location }}
                 </p>
 
@@ -147,9 +148,10 @@
 
                 </div>
                 <div class="flex justify-end mt-4 gap-2">
-                    <button class="px-4 py-2 bg-gray-300 rounded-lg" @click="showModal = false">Batal</button>
-                    <button class="px-4 py-2 bg-green-500 text-white rounded-lg" @click="payments()"
-                        :disabled="isProcessing">
+                    <button class="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-500 transition-all"
+                        @click="showModal = false">Batal</button>
+                    <button class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-all"
+                        @click="payments()" :disabled="isProcessing">
                         <span v-if="isProcessing"
                             class="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5 inline-block mr-2"></span>
                         Konfirmasi
@@ -328,6 +330,9 @@ export default {
                         },
                     }).then((res) => {
                         console.log(res.data);
+                        router.push({
+                            name: "Riwayat",
+                        });
                     }).catch((err) => {
                         console.log(err);
                     });

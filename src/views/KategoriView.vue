@@ -1,35 +1,37 @@
 <template>
-  <div class="p-6 bg-gray-100 min-h-screen flex flex-col items-center">
+  <div class="p-6  min-h-screen flex flex-col items-center">
     <NavbarItem></NavbarItem>
 
-    <div class="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
+    <div v-if="isLoading" class="flex justify-center items-center h-64">
+      <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-indigo-900"></div>
+    </div>
+
+    <div v-else class="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
       <RouterLink v-for="event in data" :key="event.id"
         class="bg-white rounded-2xl shadow-lg overflow-hidden p-5 w-full max-w-[500px] flex flex-col hover:shadow-xl hover:scale-105 transition-all"
         :to="{ name: 'detailEvent', params: { id: event.id } }">
 
-        <img class=" w-full h-48 object-cover rounded-lg" :src="imageUrl" alt="Event Image" />
+        <img class="w-full h-48 object-cover rounded-lg" :src="Array.isArray(event.event_image) && event.event_image.length > 0
+          ? `http://127.0.0.1:8000${event.event_image[0].link}`
+          : '/src/assets/noImage.png'" alt="Event Image" />
 
         <div class="mt-4">
           <h2 class="text-xl font-bold text-indigo-900">{{ event.name }}</h2>
-
           <p class="text-lg font-medium text-indigo-900 flex flex-wrap items-center gap-2 sm:flex-nowrap">
             <span class="font-bold text-4xl text-indigo-900">{{ dayOnly(event.date) }}</span>
             <span class="flex flex-col ml-2">
               <span class="text-lg text-indigo-900">{{ getMonthName(event.date) }}</span>
               <span class="text-lg text-indigo-900">{{ yearOnly(event.date) }}</span>
             </span>
-
             <span class="flex items-center gap-1 text-indigo-900 ml-3">
               <IconTime></IconTime>
               {{ timeOnly(event.time) }}
             </span>
-
             <span class="flex items-center gap-1 text-indigo-900 text-sm sm:ml-1 ml-0 w-full sm:w-auto">
               <IconLocation></IconLocation>
               <strong class="whitespace-nowrap sm:whitespace-normal">{{ event.vanue.name }}</strong>
             </span>
           </p>
-
           <div class="mt-3">
             <div class="flex flex-wrap gap-2">
               <button v-for="(seat, index) in event.event_price" :key="index" @click="selectCategory(event, seat)"
@@ -43,7 +45,6 @@
                 {{ seat.seat_category.name }} ({{ seat.total_seat - seat.tickets_count }})
               </button>
             </div>
-
             <div class="flex flex-col  mt-3">
               <span class="text-lg font-medium text-yellow-500">
                 <strong class="text-2xl">{{ event.selectedPrice == 0 ? formatToIDR(event.event_price_min_price) :
@@ -51,7 +52,6 @@
               </span>
             </div>
           </div>
-
         </div>
       </RouterLink>
     </div>
@@ -70,8 +70,8 @@ export default {
   },
   data() {
     return {
-      imageUrl: "https://awsimages.detik.net.id/community/media/visual/2020/03/06/6ee251fb-59d2-4d12-bb31-4cbaa12f0450.jpeg?w=1200",
       data: [],
+      isLoading: true,
     };
   },
   mounted() {
@@ -92,6 +92,7 @@ export default {
       }
     },
     getItem() {
+      this.isLoading = true;
       axios.get(`http://localhost:8000/api/events`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -106,6 +107,8 @@ export default {
         }
       }).catch((err) => {
         console.error("Error fetching ticket data:", err);
+      }).finally(() => {
+        this.isLoading = false;
       });
     },
     dayOnly(date) {

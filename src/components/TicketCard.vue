@@ -1,6 +1,6 @@
 <template>
   <div class="bg-indigo-900 text-white rounded-xl shadow-lg  w-full max-w-5xl relative">
-    <img class="w-full h-70 object-cover rounded-s-lg rounded-se-lg" :src="image" alt="Event Image" />
+    <img class="w-full h-70 object-cover rounded-ss-lg rounded-se-lg" :src="image_link" alt="Event Image" />
     <div class="p-3">
       <h2 class="text-lg font-bold">{{ title }}</h2>
       <div class="mt-2 flex flex-col gap-1">
@@ -36,6 +36,13 @@ import IconLocation from "@/components/icons/IconLocation.vue";
 import { RouterLink } from "vue-router";
 
 export default {
+  data() {
+    return {
+      image_link: this.image
+        ? `http://127.0.0.1:8000${this.image}`
+        : "/src/assets/noImage.png",
+    };
+  },
   props: {
     image: String,
     title: String,

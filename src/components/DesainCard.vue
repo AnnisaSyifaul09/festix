@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <img :src="image" :alt="title">
+    <img :src="image_link" :alt="title">
     <div class="card-body">
       <h2 class="card-title">{{ title }}</h2>
       <div class="details">
@@ -32,6 +32,13 @@ import IconLocation from "@/components/icons/IconLocation.vue";
 import QrCode from "@/components/QrCode.vue";
 
 export default {
+  data() {
+    return {
+      image_link: this.image
+        ? `http://127.0.0.1:8000${this.image}`
+        : "/src/assets/noImage.png",
+    };
+  },
   props: {
     image: String,
     title: String,

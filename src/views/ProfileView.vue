@@ -9,20 +9,19 @@
     <section class="py-12 px-6 md:px-0 max-w-screen-xl mx-auto">
       <div class="p-2 min-h-screen flex flex-col">
         <h1 class="text-2xl font-bold text-indigo-900 mb-8 text-left">TICKET HISTORY</h1>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 w-full mx-auto justify-items-center">
-          <!-- <TicketCard 
-            v-for="(ticket, index) in tickets" 
-            :key="index" 
-            :image="ticket.image" 
-            :title="ticket.title" 
-            :date="ticket.date" 
-            :time="ticket.time" 
-            :location="ticket.location" 
-          /> -->
-          <TicketCard v-for="(ticket, index) in data" :key="index" :image="tickets[0].image"
+
+        <!-- Loading Spinner -->
+        <div v-if="loading" class="flex justify-center items-center min-h-screen">
+          <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+        </div>
+
+        <!-- Content Display After Data is Loaded -->
+        <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-10 w-full mx-auto justify-items-center">
+          <TicketCard v-for="(ticket, index) in data" :key="index"
+            :image="Array.isArray(ticket.event_price.event.event_image) && ticket.event_price.event.event_image.length > 0 ? ticket.event_price.event.event_image[0].link : ''"
             :title="ticket.event_price.event.name" :date="ticket.event_price.event.date"
-            :time="ticket.event_price.event.time.split(' ')[1].slice(0, 5)" :location="tickets[0].location"
-            :id="ticket.id" :status="ticket.status" />
+            :time="ticket.event_price.event.time.split(' ')[1].slice(0, 5)"
+            :location="ticket.event_price.event.location" :id="ticket.id" :status="ticket.status" />
         </div>
       </div>
     </section>
@@ -34,7 +33,6 @@ import NavbarItem from "@/components/NavbarItem.vue";
 import ProfileCard from "@/components/ProfileCard.vue";
 import TicketCard from "@/components/TicketCard.vue";
 import axios from "axios";
-
 
 export default {
   components: {
@@ -59,7 +57,8 @@ export default {
         },
       ],
       me: {},
-      data: {},
+      data: [],
+      loading: true,  // Start loading state as true
     };
   },
   mounted() {
@@ -67,6 +66,7 @@ export default {
   },
   methods: {
     getItem() {
+      // Fetch user profile
       axios.get(`http://localhost:8000/api/auth/me`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -75,20 +75,22 @@ export default {
         console.log(res.data.data);
         this.me = res.data.data;
       }).catch((err) => {
-        console.error("Error fetching ticket data:", err);
+        console.error("Error fetching profile data:", err);
       });
 
+      // Fetch ticket history
       axios.get(`http://localhost:8000/api/history-tickets`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       }).then((res) => {
-        console.log(res.data.data)
-        this.data = res.data.data
+        console.log(res.data.data);
+        this.data = res.data.data;
+        this.loading = false;  // Set loading to false when data is fetched
       }).catch((err) => {
-        console.log(err);
+        console.error("Error fetching ticket data:", err);
+        this.loading = false;  // Also stop loading in case of error
       });
-
     },
   }
 };
