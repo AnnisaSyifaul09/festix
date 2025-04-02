@@ -3,14 +3,14 @@
     <NavbarItem />
     <section class="pt-24 py-12 px-6 md:px-0 max-w-screen-xl mx-auto">
       <h2 class="text-indigo-900 font-bold text-2xl mb-2">PROFILE</h2>
-      <ProfileCard username="John Doe" email="john.doe@example.com" />
+      <ProfileCard :username="me.name" :email="me.email" :id="me.id" />
     </section>
 
     <section class="py-12 px-6 md:px-0 max-w-screen-xl mx-auto">
       <div class="p-2 min-h-screen flex flex-col">
         <h1 class="text-2xl font-bold text-indigo-900 mb-8 text-left">TICKET HISTORY</h1>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 w-full max-w-4xl mx-auto justify-items-center">
-          <TicketCard 
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 w-full mx-auto justify-items-center">
+          <!-- <TicketCard 
             v-for="(ticket, index) in tickets" 
             :key="index" 
             :image="ticket.image" 
@@ -18,7 +18,11 @@
             :date="ticket.date" 
             :time="ticket.time" 
             :location="ticket.location" 
-          />
+          /> -->
+          <TicketCard v-for="(ticket, index) in data" :key="index" :image="tickets[0].image"
+            :title="ticket.event_price.event.name" :date="ticket.event_price.event.date"
+            :time="ticket.event_price.event.time.split(' ')[1].slice(0, 5)" :location="tickets[0].location"
+            :id="ticket.id" :status="ticket.status" />
         </div>
       </div>
     </section>
@@ -29,9 +33,11 @@
 import NavbarItem from "@/components/NavbarItem.vue";
 import ProfileCard from "@/components/ProfileCard.vue";
 import TicketCard from "@/components/TicketCard.vue";
+import axios from "axios";
+
 
 export default {
-  components: { 
+  components: {
     NavbarItem, TicketCard, ProfileCard
   },
   data() {
@@ -52,7 +58,38 @@ export default {
           location: "Teater Taman Sriwedari",
         },
       ],
+      me: {},
+      data: {},
     };
   },
+  mounted() {
+    this.getItem();
+  },
+  methods: {
+    getItem() {
+      axios.get(`http://localhost:8000/api/auth/me`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }).then((res) => {
+        console.log(res.data.data);
+        this.me = res.data.data;
+      }).catch((err) => {
+        console.error("Error fetching ticket data:", err);
+      });
+
+      axios.get(`http://localhost:8000/api/history-tickets`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }).then((res) => {
+        console.log(res.data.data)
+        this.data = res.data.data
+      }).catch((err) => {
+        console.log(err);
+      });
+
+    },
+  }
 };
 </script>

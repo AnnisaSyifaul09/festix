@@ -5,7 +5,7 @@
       <div
         class="bg-indigo-900 shadow-lg rounded-lg p-6 transition transform hover:scale-105 duration-300 cursor-pointer">
         <!-- Gambar -->
-        <img class="w-full h-full object-cover rounded-lg" src="/src/assets/konser1.jpg" alt="Event Image" />
+        <img class="w-full h-full object-cover rounded-lg" :src="image_link" alt="Event Image" />
 
         <div class="mt-4">
           <h2 class="text-lg font-bold text-white pb-3">{{ name }}</h2>

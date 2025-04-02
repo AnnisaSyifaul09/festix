@@ -22,7 +22,8 @@
       <h2 class="text-indigo-900 text-2xl font-bold mb-2">OUR EVENTS</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <EventCard v-for="event in limitedEvents" :key="event" :name="event.name" :venue="event.vanue.name"
-          :date="event.date" :time="event.time" />
+          :date="event.date" :time="event.time"
+          :image="Array.isArray(event.event_image) && event.event_image.length > 0 ? event.event_image[0].link : ''" />
       </div>
     </section>
 
