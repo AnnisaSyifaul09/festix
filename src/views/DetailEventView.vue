@@ -5,7 +5,9 @@
             <div class="grid grid-cols-1 gap-10 md:grid-cols-[2fr_1fr]">
                 <div>
                     <div class="rounded-md overflow-hidden">
-                        <img class="aspect-video object-cover w-full" :src="ticket.image" alt="Event Image" />
+                        <img class="aspect-video object-cover w-full" :src="Array.isArray(event.event_image) && event.event_image.length > 0
+                            ? `http://127.0.0.1:8000${event.event_image[0].link}`
+                            : '/src/assets/noImage.png'" alt="Event Image" />
                     </div>
                     <h1 class="text-4xl text-indigo-900 font-semibold mt-4">{{ event.name }}</h1>
                     <div class="mt-2 flex flex-wrap gap-5">
@@ -21,7 +23,8 @@
                     </div>
                     <p class="flex items-center gap-2">
                         <IconLocation class="w-5 h-5 text-indigo-900" />
-                        {{ ticket.location }}
+                        {{ event.vanue?.name
+                        }}
                     </p>
                     <!-- <div class="w-full flex flex-wrap gap-3 mt-5">
                         <div class="px-5 py-1 rounded-lg"
@@ -95,7 +98,11 @@
                     </div>
 
                     <div class="">
-                        <div class="w-full h-99 bg-amber-100 mt-5 rounded-lg"></div>
+                        <div class="w-full bg-amber-100 mt-5 rounded-lg overflow-hidden">
+                            <img class="object-cover w-full" :src="event.seat_image
+                                ? `http://127.0.0.1:8000${event.seat_image}`
+                                : '/src/assets/noImage.png'" alt="Event Image" />
+                        </div>
                     </div>
                 </div>
 
@@ -252,6 +259,7 @@ export default {
                     Authorization: "Bearer " + localStorage.getItem("token"),
                 },
             }).then((res) => {
+                console.log(res.data.data)
                 this.category = res.data.data.total_seats_remaining;
                 this.event = res.data.data.event;
                 if (this.category.length > 0) {

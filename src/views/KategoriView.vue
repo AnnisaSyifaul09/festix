@@ -6,7 +6,7 @@
       <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-indigo-900"></div>
     </div>
 
-    <div v-else class="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
+    <div v-else class="container mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
       <RouterLink v-for="event in data" :key="event.id"
         class="bg-white rounded-2xl shadow-lg overflow-hidden p-5 w-full max-w-[500px] flex flex-col hover:shadow-xl hover:scale-105 transition-all"
         :to="{ name: 'detailEvent', params: { id: event.id } }">

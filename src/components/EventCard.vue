@@ -1,11 +1,11 @@
 <template>
-  <div class="max-w-lg mx-auto mt-8 space-y-6 md:flex-col">
+  <div class="w-full mx-auto mt-8 space-y-6 md:flex-col">
     <!-- Card dengan Router Link -->
     <router-link to="/kategori" class="block">
       <div
-        class="bg-indigo-900 shadow-lg rounded-lg p-6 transition transform hover:scale-105 duration-300 cursor-pointer">
+        class="bg-indigo-900 w-full shadow-lg rounded-lg p-6 transition transform hover:scale-105 duration-300 cursor-pointer">
         <!-- Gambar -->
-        <img class="w-full h-full object-cover rounded-lg" :src="image_link" alt="Event Image" />
+        <img class="w-full aspect-video object-cover rounded-lg" :src="image_link" alt="Event Image" />
 
         <div class="mt-4">
           <h2 class="text-lg font-bold text-white pb-3">{{ name }}</h2>
