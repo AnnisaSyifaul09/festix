@@ -62,6 +62,12 @@ export default {
   },
   mounted() {
     this.getItem();
+    const token = localStorage.getItem('token');
+    const username = localStorage.getItem('name');
+
+    if (!token || !username) {
+      router.push({ name: 'login' });
+    }
   },
   methods: {
     getItem() {
@@ -74,7 +80,16 @@ export default {
         this.data = res.data.data;
         this.loading = false;
       }).catch((err) => {
-        console.log(err);
+        if (err.response?.status === 401) {
+          localStorage.removeItem('email');
+          localStorage.removeItem('name');
+          localStorage.removeItem('role_id');
+          localStorage.removeItem('token');
+
+          router.push({ name: 'login' });
+        } else {
+          console.error("Error fetching venues data:", err);
+        }
         this.loading = false;
       });
     }

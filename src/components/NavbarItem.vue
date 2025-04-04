@@ -21,7 +21,7 @@
       </div>
 
       <!-- Dropdown Profile -->
-      <div class="relative">
+      <div class="relative" v-if="token && username">
         <button @click="toggleDropdown"
           class="font-semibold text-indigo-900 uppercase tracking-wide hover:text-indigo-700 transition-all">
           Profile ▼
@@ -35,6 +35,14 @@
           <a href="#"
             class="block px-4 py-2 text-indigo-900 hover:bg-indigo-100 hover:text-indigo-700 transition-all">Logout</a>
         </div>
+      </div>
+
+      <div v-else class="hidden md:flex space-x-12">
+        <a href="/login"
+          class="font-semibold text-indigo-900 uppercase tracking-wide hover:text-indigo-700 transition-all">Login</a>
+        <a href="/register"
+          class="font-semibold text-indigo-900 uppercase tracking-wide hover:text-indigo-700 transition-all">Register</a>
+
       </div>
     </div>
 
@@ -54,11 +62,15 @@ export default {
     return {
       mobileMenuOpen: false,
       dropdownOpen: false,
+      token: '',
+      username: '',
     };
   },
   mounted() {
     this.mobileMenuOpen = false;
     this.dropdownOpen = false;
+    this.token = localStorage.getItem('token');
+    this.username = localStorage.getItem('name');
   },
   methods: {
     toggleDropdown() {

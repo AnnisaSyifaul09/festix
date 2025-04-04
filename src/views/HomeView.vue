@@ -49,6 +49,8 @@ import EventCard from "@/components/EventCard.vue";
 import NavbarItem from "@/components/NavbarItem.vue";
 import VenueCard from "@/components/VenueCard.vue";
 import axios from "axios";
+import router from '@/router';
+
 
 export default {
   components: {
@@ -85,7 +87,16 @@ export default {
           this.data = res.data.data;
         }
       }).catch((err) => {
-        console.error("Error fetching ticket data:", err);
+        if (err.response?.status === 401) {
+          localStorage.removeItem('email');
+          localStorage.removeItem('name');
+          localStorage.removeItem('role_id');
+          localStorage.removeItem('token');
+
+          router.push({ name: 'login' });
+        } else {
+          console.error("Error fetching venues data:", err);
+        }
       });
 
       axios.get(`http://localhost:8000/api/events`, {

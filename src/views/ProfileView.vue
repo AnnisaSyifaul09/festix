@@ -33,6 +33,8 @@ import NavbarItem from "@/components/NavbarItem.vue";
 import ProfileCard from "@/components/ProfileCard.vue";
 import TicketCard from "@/components/TicketCard.vue";
 import axios from "axios";
+import router from "@/router";
+
 
 export default {
   components: {
@@ -63,6 +65,13 @@ export default {
   },
   mounted() {
     this.getItem();
+
+    const token = localStorage.getItem('token');
+    const username = localStorage.getItem('name');
+
+    if (!token || !username) {
+      router.push({ name: 'login' });
+    }
   },
   methods: {
     getItem() {
@@ -75,7 +84,16 @@ export default {
         console.log(res.data.data);
         this.me = res.data.data;
       }).catch((err) => {
-        console.error("Error fetching profile data:", err);
+        if (err.response?.status === 401) {
+          localStorage.removeItem('email');
+          localStorage.removeItem('name');
+          localStorage.removeItem('role_id');
+          localStorage.removeItem('token');
+
+          router.push({ name: 'login' });
+        } else {
+          console.error("Error fetching venues data:", err);
+        }
       });
 
       // Fetch ticket history
@@ -88,7 +106,16 @@ export default {
         this.data = res.data.data;
         this.loading = false;  // Set loading to false when data is fetched
       }).catch((err) => {
-        console.error("Error fetching ticket data:", err);
+        if (err.response?.status === 401) {
+          localStorage.removeItem('email');
+          localStorage.removeItem('name');
+          localStorage.removeItem('role_id');
+          localStorage.removeItem('token');
+
+          router.push({ name: 'login' });
+        } else {
+          console.error("Error fetching venues data:", err);
+        }
         this.loading = false;  // Also stop loading in case of error
       });
     },

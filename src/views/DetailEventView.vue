@@ -291,10 +291,24 @@ export default {
             this.isDropdownOpen = !this.isDropdownOpen;
         },
         buy() {
+            const token = localStorage.getItem('token');
+            const username = localStorage.getItem('name');
+
+            if (!token || !username) {
+                router.push({ name: 'login' });
+            }
+
             this.showModal = true;
             this.ppn = this.totalPrice * 0.1
         },
         payments() {
+            const token = localStorage.getItem('token');
+            const username = localStorage.getItem('name');
+
+            if (!token || !username) {
+                router.push({ name: 'login' });
+            }
+
             this.isProcessing = true;
 
             console.log(this.selectedCategory)
@@ -315,10 +329,25 @@ export default {
 
                 this.pay()
             }).catch((err) => {
-                console.log(err);
+                if (err.response?.status === 401) {
+                    localStorage.removeItem('email');
+                    localStorage.removeItem('name');
+                    localStorage.removeItem('role_id');
+                    localStorage.removeItem('token');
+
+                    router.push({ name: 'login' });
+                } else {
+                    console.error("Error fetching venues data:", err);
+                }
             });
         },
         pay() {
+            const token = localStorage.getItem('token');
+            const username = localStorage.getItem('name');
+
+            if (!token || !username) {
+                router.push({ name: 'login' });
+            }
             if (!window.snap) {
                 console.error("Midtrans Snap.js is not loaded");
                 return;
@@ -342,7 +371,16 @@ export default {
                             name: "Riwayat",
                         });
                     }).catch((err) => {
-                        console.log(err);
+                        if (err.response?.status === 401) {
+                            localStorage.removeItem('email');
+                            localStorage.removeItem('name');
+                            localStorage.removeItem('role_id');
+                            localStorage.removeItem('token');
+
+                            router.push({ name: 'login' });
+                        } else {
+                            console.error("Error fetching  data:", err);
+                        }
                     });
                 },
                 onPending: (result) => {
