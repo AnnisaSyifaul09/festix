@@ -1,5 +1,6 @@
 <template>
-    <div class="container md:w-2/4 mx-auto bg-white p-6 rounded-lg shadow-md">
+    <NavbarAdmin></NavbarAdmin>
+    <div class="container md:w-2/4 mx-auto mt-20 bg-white p-6 rounded-lg shadow-md">
         <h2 class="text-xl font-semibold mb-4">Create Event</h2>
         <form @submit.prevent="submitForm" class="space-y-4">
             <div>
@@ -61,9 +62,14 @@
 </template>
 
 <script>
+import NavbarAdmin from "@/components/NavbarAdmin.vue";
+
 import axios from 'axios';
 
 export default {
+    components: {
+        NavbarAdmin,
+    },
     data() {
         return {
             form: {

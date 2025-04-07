@@ -368,7 +368,7 @@ export default {
                     }).then((res) => {
                         console.log(res.data);
                         router.push({
-                            name: "Riwayat",
+                            name: "riwayat",
                         });
                     }).catch((err) => {
                         if (err.response?.status === 401) {
