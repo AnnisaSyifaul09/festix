@@ -17,6 +17,8 @@ import DetailEventView from "@/views/DetailEventView.vue";
 import PaymentConfirmView from "@/views/PaymentConfirmView.vue";
 import VerifyView from "@/views/admin/verify/VerifyView.vue";
 import CreateEventView from "@/views/admin/event/CreateEventView.vue";
+import ShowEventView from "@/views/admin/event/ShowEventView.vue";
+import CreateVenueView from "@/views/admin/venue/CreateVenueView.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -94,6 +96,11 @@ const router = createRouter({
       component: CreateEventView,
     },
     {
+      path: "/admin/events/:id",
+      name: "eventShow",
+      component: ShowEventView,
+    },
+    {
       path: "/admin/verify",
       name: "verify",
       component: VerifyView,
@@ -102,6 +109,11 @@ const router = createRouter({
       path: "/admin/venues",
       name: "venues",
       component: VenueIndex,
+    },
+    {
+      path: "/admin/venues/create",
+      name: "venuesCreate",
+      component: CreateVenueView,
     },
     {
       path: "/admin/cash",

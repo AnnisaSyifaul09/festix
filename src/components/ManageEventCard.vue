@@ -18,10 +18,10 @@
         </p>
       </div>
       <div class="flex gap-5">
-        <button
+        <RouterLink :to="{ name: 'eventShow', params: { id: id } }"
           class="mt-4 bg-indigo-500 px-4 py-2 rounded-lg w-20 hover:bg-indigo-700 flex items-center justify-center">
           Detail
-        </button>
+        </RouterLink>
         <button class="mt-4 bg-red-500 px-4 py-2 rounded-lg w-20 hover:bg-red-700 flex items-center justify-center">
           Delete
         </button>
@@ -39,6 +39,7 @@ import IconLocation from "@/components/icons/IconLocation.vue";
 
 export default {
   props: {
+    id: String,
     image: String,
     title: String,
     date: String,

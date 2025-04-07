@@ -2,15 +2,18 @@
   <div>
     <NavbarAdmin></NavbarAdmin>
     <section class="py-12 px-6 md:px-0 container mx-auto">
-      <div class="pt-10 p-2 min-h-screen flex flex-col">
+      <div class="pt-10 p-4 min-h-screen flex flex-col">
         <div class="py-5 flex flex-row justify-between items-center">
           <h1 class="text-2xl font-bold text-indigo-900 leading-tight">Manage Venue</h1>
-          <a href="#" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full"> Add New</a>
+          <RouterLink :to="{ name: 'venuesCreate' }" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+            Add
+            New</RouterLink>
         </div>
         <div v-if="isLoading" class="flex justify-center items-center h-32">
           <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-indigo-900"></div>
         </div>
-        <div v-else class="pt-10 grid grid-cols-1 md:grid-cols-4 gap-10 w-full container mx-auto justify-items-center">
+        <div v-else
+          class="pt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 w-full container mx-auto justify-items-center">
           <ManageVenueCard v-for="(venue, index) in data" :key="index" :name="venue.name" :address="venue.address"
             :image="Array.isArray(venue.venue_image) && venue.venue_image.length > 0 ? venue.venue_image[0].link : ''"
             :location="venue.address" />
