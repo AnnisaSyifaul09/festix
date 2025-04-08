@@ -21,7 +21,7 @@
         <a href="/admin/cash"
           class="font-semibold text-indigo-900 uppercase tracking-wide hover:text-indigo-700 transition-all">Cash
           Report</a>
-        <a href="/admin/users"
+        <a href="/admin/user"
           class="font-semibold text-indigo-900 uppercase tracking-wide hover:text-indigo-700 transition-all">User</a>
       </div>
 
