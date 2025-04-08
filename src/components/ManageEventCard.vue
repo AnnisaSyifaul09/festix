@@ -17,16 +17,16 @@
           {{ location }}
         </p>
       </div>
-      <div class="flex gap-5">
+      <div class="flex justify-between gap-3">
         <RouterLink :to="{ name: 'eventShow', params: { id: id } }"
-          class="mt-4 bg-indigo-500 px-4 py-2 rounded-lg w-20 hover:bg-indigo-700 flex items-center justify-center">
+          class="mt-4 bg-indigo-500 px-4 py-2 rounded-lg  hover:bg-indigo-700 flex items-center justify-center">
           Detail
         </RouterLink>
-        <RouterLink :to="{ name: 'eventShow', params: { id: id } }"
-          class="mt-4 bg-lime-500 px-4 py-2 rounded-lg w-20 hover:bg-lime-700 flex items-center justify-center">
+        <RouterLink :to="{ name: 'eventUpdate', params: { id: id } }"
+          class="mt-4 bg-lime-500 px-4 py-2 rounded-lg  hover:bg-lime-700 flex items-center justify-center">
           Update
         </RouterLink>
-        <button class="mt-4 bg-red-500 px-4 py-2 rounded-lg w-20 hover:bg-red-700 flex items-center justify-center">
+        <button class="mt-4 bg-red-500 px-4 py-2 rounded-lg  hover:bg-red-700 flex items-center justify-center">
           Delete
         </button>
       </div>

@@ -29,7 +29,7 @@
             </span>
             <span class="flex items-center gap-1 text-indigo-900 text-sm sm:ml-1 ml-0 w-full sm:w-auto">
               <IconLocation></IconLocation>
-              <strong class="whitespace-nowrap sm:whitespace-normal">{{ event.vanue.name }}</strong>
+              <strong class="whitespace-nowrap sm:whitespace-normal">{{ event.vanue?.name }}</strong>
             </span>
           </p>
           <div class="mt-3">

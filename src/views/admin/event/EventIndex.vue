@@ -18,7 +18,7 @@
           <ManageEventCard v-for="(event, index) in data" class="shadow-lg hover:scale-105 transition duration-300"
             :key="index" :event="event" :title="event.name" :date="event.date" :time="event.time"
             :image="Array.isArray(event.event_image) && event.event_image.length > 0 ? event.event_image[0].link : ''"
-            :location="event.vanue.name" :id="event.id" />
+            :location="event.vanue?.name" :id="event.id" />
         </div>
 
       </div>

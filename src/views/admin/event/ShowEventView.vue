@@ -116,7 +116,6 @@ export default {
             total: 0,
             showModal: false,
             admin: 2000,
-            totalPayment: 0,
             resultJson: "",
             snapToken: "",
             payment: "",
