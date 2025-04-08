@@ -19,6 +19,9 @@ import VerifyView from "@/views/admin/verify/VerifyView.vue";
 import CreateEventView from "@/views/admin/event/CreateEventView.vue";
 import ShowEventView from "@/views/admin/event/ShowEventView.vue";
 import CreateVenueView from "@/views/admin/venue/CreateVenueView.vue";
+import UserIndex from "@/views/admin/user/UserIndex.vue";
+import UserCreate from "@/views/admin/user/UserCreate.vue";
+import UserEdit from "@/views/admin/user/UserEdit.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -119,6 +122,21 @@ const router = createRouter({
       path: "/admin/cash",
       name: "cash",
       component: CashIndex,
+    },
+    {
+      path: "/admin/user",
+      name: "user",
+      component: UserIndex,
+    },
+    {
+      path: "/admin/user/create",
+      name: "userCreate",
+      component: UserCreate,
+    },
+    {
+      path: "/admin/user/:id/edit",
+      name: "userEdit",
+      component: UserEdit,
     },
   ],
 });
