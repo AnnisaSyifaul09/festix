@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <img :src="image_link" :alt="title">
+    <img class="w-full aspect-video object-cover" :src="image_link" :alt="title">
     <div class="card-body">
       <h2 class="card-title">{{ title }}</h2>
       <div class="details">

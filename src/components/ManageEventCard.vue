@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-indigo-900 text-white rounded-xl shadow-lg overflow-hidden w-full max-w-5xl">
-    <img class="w-full h-70 object-cover" :src="image_link" alt="Event Image" />
+  <div class="bg-indigo-900 text-white rounded-xl shadow-lg overflow-hidden w-full ">
+    <img class="w-full aspect-video object-cover" :src="image_link" alt="Event Image" />
     <div class="p-3">
       <h2 class="text-lg font-bold">{{ title }}</h2>
       <div class="mt-2 flex flex-col gap-1">
@@ -21,6 +21,10 @@
         <RouterLink :to="{ name: 'eventShow', params: { id: id } }"
           class="mt-4 bg-indigo-500 px-4 py-2 rounded-lg w-20 hover:bg-indigo-700 flex items-center justify-center">
           Detail
+        </RouterLink>
+        <RouterLink :to="{ name: 'eventShow', params: { id: id } }"
+          class="mt-4 bg-lime-500 px-4 py-2 rounded-lg w-20 hover:bg-lime-700 flex items-center justify-center">
+          Update
         </RouterLink>
         <button class="mt-4 bg-red-500 px-4 py-2 rounded-lg w-20 hover:bg-red-700 flex items-center justify-center">
           Delete

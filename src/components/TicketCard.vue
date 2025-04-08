@@ -1,6 +1,6 @@
 <template>
   <div class="bg-indigo-900 text-white rounded-xl shadow-lg  w-full max-w-5xl relative">
-    <img class="w-full h-70 object-cover rounded-ss-lg rounded-se-lg" :src="image_link" alt="Event Image" />
+    <img class="w-full aspect-video object-cover rounded-ss-lg rounded-se-lg" :src="image_link" alt="Event Image" />
     <div class="p-3">
       <h2 class="text-lg font-bold">{{ title }}</h2>
       <div class="mt-2 flex flex-col gap-1">
