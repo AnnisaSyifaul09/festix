@@ -9,7 +9,7 @@
             New</RouterLink>
         </div>
         <div class="pt-10 w-full">
-          <ManageUserTable :users="users" @edit="handleEdit" @delete="handleDelete" />
+          <ManageUserTable :users="data" @edit="handleEdit" @delete="handleDelete" />
         </div>
       </div>
     </section>
@@ -20,6 +20,8 @@
 import NavbarAdmin from "@/components/NavbarAdmin.vue";
 import ManageUserTable from "@/components/ManageUserTable.vue";
 import { RouterLink } from 'vue-router';
+import axios from "axios";
+
 
 export default {
   components: {
@@ -58,8 +60,13 @@ export default {
           email: 'user@example.com',
           role: 'user'
         }
-      ]
+      ],
+      data: [],
+      isLoading: true,
     };
+  },
+  mounted() {
+    this.getItem();
   },
   methods: {
     handleEdit(userId) {
@@ -68,7 +75,35 @@ export default {
     handleDelete(userId) {
       console.log('Delete user:', userId);
       // Implement delete logic
-    }
+    },
+    async getItem() {
+      this.isLoading = true;
+      try {
+        const res = await axios.get(`http://localhost:8000/api/admin/users`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        });
+        this.isLoading = false;
+        if (res.data?.data) {
+          this.data = res.data.data;
+
+          console.log(this.data.data);
+        }
+      } catch (err) {
+        this.isLoading = false;
+        if (err.response?.status === 401) {
+          localStorage.removeItem('email');
+          localStorage.removeItem('name');
+          localStorage.removeItem('role_id');
+          localStorage.removeItem('token');
+
+          router.push({ name: 'login' });
+        } else {
+          console.error("Error fetching roles data:", err);
+        }
+      }
+    },
   }
 };
 </script>

@@ -13,23 +13,19 @@
       <tbody>
         <tr v-for="user in users" :key="user.id" class="border-b hover:bg-gray-50">
           <td class="py-3 px-4">{{ user.username }}</td>
-          <td class="py-3 px-4">{{ user.fullName }}</td>
+          <td class="py-3 px-4">{{ user.name }}</td>
           <td class="py-3 px-4">{{ user.email }}</td>
           <td class="py-3 px-4">
-            <span :class="getRoleBadgeClass(user.role)">{{ user.role }}</span>
+            <span :class="getRoleBadgeClass(user.role.name)">{{ user.role.name }}</span>
           </td>
           <td class="py-3 px-4">
             <div class="flex justify-center gap-2">
-              <button
-                @click="$emit('edit', user.id)"
-                class="bg-indigo-500 text-white px-3 py-1 rounded hover:bg-indigo-700 transition-colors"
-              >
+              <button @click="$emit('edit', user.id)"
+                class="bg-indigo-500 text-white px-3 py-1 rounded hover:bg-indigo-700 transition-colors">
                 Edit
               </button>
-              <button
-                @click="$emit('delete', user.id)"
-                class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 transition-colors"
-              >
+              <button @click="$emit('delete', user.id)"
+                class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 transition-colors">
                 Delete
               </button>
             </div>
