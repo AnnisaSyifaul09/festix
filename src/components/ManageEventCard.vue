@@ -26,11 +26,30 @@
           class="mt-4 bg-lime-500 px-4 py-2 rounded-lg  hover:bg-lime-700 flex items-center justify-center">
           Update
         </RouterLink>
-        <button class="mt-4 bg-red-500 px-4 py-2 rounded-lg  hover:bg-red-700 flex items-center justify-center">
+        <button @click="$emit('confirm-delete', id)"
+          class="mt-4 bg-red-500 px-4 py-2 rounded-lg hover:bg-red-700 flex items-center justify-center">
           Delete
         </button>
+
       </div>
 
+    </div>
+
+    <div v-if="showConfirmModal"
+      class="fixed inset-0 bg-white/15 backdrop-blur-lg flex items-center justify-center z-50">
+      <div class="bg-white text-black rounded-xl p-6 w-full max-w-md shadow-xl">
+        <h2 class="text-xl font-bold mb-4">Are you sure?</h2>
+        <p class="mb-6">Do you really want to delete this venue? This action cannot be undone.</p>
+        <div class="flex justify-end gap-3">
+          <button @click="showConfirmModal = false"
+            class="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100">
+            Cancel
+          </button>
+          <button @click="deleteItem" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-800">
+            Yes, Delete
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -55,6 +74,7 @@ export default {
       image_link: this.image
         ? `http://127.0.0.1:8000${this.image}`
         : "/src/assets/noImage.png",
+      showConfirmModal: false, // kontrol modal
     };
   },
   components: {
@@ -77,6 +97,30 @@ export default {
     getMonthName(date) {
       const dateObj = new Date(date);
       return new Intl.DateTimeFormat("en-US", { month: "long" }).format(dateObj);
+    },
+    deleteItem() {
+      const formData = new FormData();
+      formData.append("_method", "delete");
+
+      axios
+        .post(
+          `http://localhost:8000/api/events/delete/${this.id}`,
+          formData,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        )
+        .then(() => {
+          this.$emit("deleted", this.id); // kirim sinyal ke parent
+          this.showConfirmModal = false;
+        })
+        .catch((err) => {
+          console.error("Error deleting venue:", err);
+          this.showConfirmModal = false;
+        });
     },
   },
 };

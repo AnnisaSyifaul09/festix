@@ -24,6 +24,14 @@ import UserCreate from "@/views/admin/user/UserCreate.vue";
 import UserEdit from "@/views/admin/user/UserEdit.vue";
 import EditEventView from "@/views/admin/event/EditEventView.vue";
 import EditVenueView from "@/views/admin/venue/EditVenueView.vue";
+import AdminProfileView from "@/views/admin/profile/AdminProfileView.vue";
+import UpdateAdminProfileView from "@/views/admin/profile/UpdateAdminProfileView.vue";
+
+const userRole = import.meta.env.VITE_USER_ROLE;
+const adminRole = import.meta.env.VITE_ADMIN_ROLE;
+const managerRole = import.meta.env.VITE_MANAGER_ROLE;
+const superAdminRole = import.meta.env.VITE_SUPER_ADMIN_ROLE;
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -31,6 +39,11 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: HomeView,
+    },
+    {
+      path: "/unauthorized",
+      name: "unauthorized",
+      component: () => import("@/views/UnauthorizedView.vue"), // Buat view ini ya
     },
     {
       path: "/welcome",
@@ -89,6 +102,10 @@ const router = createRouter({
       path: "/admin",
       name: "dashboard",
       component: AdminView,
+      meta: {
+        requiresAuth: true,
+        role: [adminRole, managerRole, superAdminRole],
+      },
     },
     {
       path: "/admin/events",
@@ -150,7 +167,42 @@ const router = createRouter({
       name: "userEdit",
       component: UserEdit,
     },
+    {
+      path: "/admin/profile",
+      name: "profileAdmin",
+      component: AdminProfileView,
+    },
+    {
+      path: "/admin/profile/update",
+      name: "updateProfileAdmin",
+      component: UpdateAdminProfileView,
+    },
   ],
 });
 
 export default router;
+
+router.beforeEach((to, from, next) => {
+  try {
+    const role_id = localStorage.getItem("role_id");
+
+    // Jika halaman butuh login dan belum login
+    if (to.meta.requiresAuth && !role_id) {
+      return next("/login");
+    }
+
+    if (to.meta.role && role_id === userRole) {
+      return next("/home");
+    }
+
+    // Jika ada aturan role dan role user tidak sesuai
+    if (to.meta.role && (!role_id || !to.meta.role.includes(role_id))) {
+      return next("/unauthorized");
+    }
+
+    next();
+  } catch (error) {
+    console.error("Auth error:", error);
+    return next("/login");
+  }
+});
