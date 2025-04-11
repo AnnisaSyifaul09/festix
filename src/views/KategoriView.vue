@@ -2,12 +2,14 @@
   <div class="p-6  min-h-screen flex flex-col items-center">
     <NavbarItem></NavbarItem>
 
+    <input v-model="searchQuery" type="text" placeholder="Cari nama event..."
+      class="mb-6 w-full mt-20 max-w-lg px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
     <div v-if="isLoading" class="flex justify-center items-center h-64">
       <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-indigo-900"></div>
     </div>
 
-    <div v-else class="container mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
-      <RouterLink v-for="event in data" :key="event.id"
+    <div v-else class="container mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
+      <RouterLink v-for="event in filteredEvents" :key="event.id"
         class="bg-white rounded-2xl shadow-lg overflow-hidden p-5 w-full max-w-[500px] flex flex-col hover:shadow-xl hover:scale-105 transition-all"
         :to="{ name: 'detailEvent', params: { id: event.id } }">
 
@@ -72,7 +74,14 @@ export default {
     return {
       data: [],
       isLoading: true,
+      searchQuery: '',
     };
+  },
+  computed: {
+    filteredEvents() {
+      const query = this.searchQuery.toLowerCase();
+      return this.data.filter(event => event.name.toLowerCase().includes(query));
+    }
   },
   mounted() {
     this.getItem();

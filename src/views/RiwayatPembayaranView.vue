@@ -136,6 +136,7 @@ export default {
                         console.log(res.data);
                         router.push({ name: "riwayat" });
                     }).catch((err) => {
+                        console.error("Error posting payment data:", err);
                         if (err.response?.status === 401) {
                             localStorage.clear();
                             router.push({ name: 'login' });

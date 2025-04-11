@@ -1,8 +1,11 @@
 <template>
     <div class="min-h-screen ">
         <NavbarItem />
-        <div class="container mx-auto w-full min-h-screen py-20 px-4 md:w-3/4">
-            <div class="grid grid-cols-1 gap-10 md:grid-cols-[2fr_1fr]">
+        <div v-if="isLoading" class="flex mt-30 justify-center items-center h-32">
+            <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-indigo-900"></div>
+        </div>
+        <div v-else class="container mx-auto w-full min-h-screen py-20 px-4 md:w-3/4">
+            <div class="grid grid-cols-1 gap-10 lg:grid-cols-[2fr_1fr]">
                 <div>
                     <div class="rounded-md overflow-hidden">
                         <img class="aspect-video object-cover w-full" :src="Array.isArray(event.event_image) && event.event_image.length > 0
@@ -223,7 +226,8 @@ export default {
             payment: "",
             ppn: "",
             isProcessing: false,
-            clientkey: import.meta.env.VITE_MIDTRANS_CLIENT_KEY
+            clientkey: import.meta.env.VITE_MIDTRANS_CLIENT_KEY,
+            isLoading: true,
         };
     },
     computed: {
@@ -259,6 +263,7 @@ export default {
                     Authorization: "Bearer " + localStorage.getItem("token"),
                 },
             }).then((res) => {
+                this.isLoading = false;
                 console.log(res.data.data)
                 this.category = res.data.data.total_seats_remaining;
                 this.event = res.data.data.event;
