@@ -28,6 +28,7 @@ import AdminProfileView from "@/views/admin/profile/AdminProfileView.vue";
 import UpdateAdminProfileView from "@/views/admin/profile/UpdateAdminProfileView.vue";
 import RiwayatPembayaranView from "@/views/RiwayatPembayaranView.vue";
 
+
 const userRole = import.meta.env.VITE_USER_ROLE;
 const adminRole = import.meta.env.VITE_ADMIN_ROLE;
 const managerRole = import.meta.env.VITE_MANAGER_ROLE;
@@ -169,7 +170,7 @@ const router = createRouter({
       component: UserCreate,
     },
     {
-      path: "/admin/user/:id/edit",
+      path: "/admin/user/edit/:id",
       name: "userEdit",
       component: UserEdit,
     },

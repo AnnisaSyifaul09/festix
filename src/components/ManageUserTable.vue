@@ -20,10 +20,10 @@
           </td>
           <td class="py-3 px-4">
             <div class="flex justify-center gap-2">
-              <button @click="$emit('edit', user.id)"
+              <RouterLink :to="{ name: 'userEdit', params: { id: user.id } }"
                 class="bg-indigo-500 text-white px-3 py-1 rounded hover:bg-indigo-700 transition-colors">
                 Edit
-              </button>
+              </RouterLink>
               <button @click="$emit('delete', user.id)"
                 class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 transition-colors">
                 Delete

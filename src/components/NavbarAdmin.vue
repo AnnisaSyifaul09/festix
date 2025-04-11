@@ -45,12 +45,12 @@
     <div v-if="dropdownOpen" @click="closeDropdown" class="fixed inset-0"></div>
 
     <div v-if="mobileMenuOpen" class="lg:hidden bg-white shadow-md p-4 absolute top-10 left-0 right-0">
-      <a href="/home" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">DASHBOARD</a>
-      <a href="#" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">EVENT</a>
-      <a href="#" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">VENUE</a>
-      <a href="#" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">VERIFY TICKET</a>
-      <a href="#" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">CASH REPORT</a>
-      <a href="#" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">USERS</a>
+      <a href="/admin" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">DASHBOARD</a>
+      <a href="/admin/events" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">EVENT</a>
+      <a href="/admin/venues" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">VENUE</a>
+      <a href="/admin/verify" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">VERIFY TICKET</a>
+      <a href="/admin/cash" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">CASH REPORT</a>
+      <a href="/admin/user" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">USERS</a>
     </div>
   </nav>
 
