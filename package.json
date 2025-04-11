@@ -12,6 +12,7 @@
     "@chenfengyuan/vue-qrcode": "^2.0.0",
     "@tailwindcss/vite": "^4.0.9",
     "axios": "^1.8.1",
+    "chart.js": "^4.4.8",
     "dotenv": "^16.4.7",
     "html5-qrcode": "^2.3.8",
     "instascan": "^1.0.0",
