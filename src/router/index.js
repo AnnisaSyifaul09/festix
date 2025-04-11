@@ -26,6 +26,7 @@ import EditEventView from "@/views/admin/event/EditEventView.vue";
 import EditVenueView from "@/views/admin/venue/EditVenueView.vue";
 import AdminProfileView from "@/views/admin/profile/AdminProfileView.vue";
 import UpdateAdminProfileView from "@/views/admin/profile/UpdateAdminProfileView.vue";
+import RiwayatPembayaranView from "@/views/RiwayatPembayaranView.vue";
 
 const userRole = import.meta.env.VITE_USER_ROLE;
 const adminRole = import.meta.env.VITE_ADMIN_ROLE;
@@ -82,6 +83,11 @@ const router = createRouter({
       path: "/riwayat",
       name: "riwayat",
       component: RiwayatView,
+    },
+    {
+      path: "/riwayat/pembayaran",
+      name: "riwayatPembayaran",
+      component: RiwayatPembayaranView,
     },
     {
       path: "/riwayat/:id",
