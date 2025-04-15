@@ -28,6 +28,9 @@
                     <p class="text-sm text-indigo-900 text-center mb-4">
                         Don't have an account? <a href="/signin" class="font-semibold">Sign In</a>
                     </p>
+                    <p class="text-sm text-indigo-900 text-center mb-4">
+                        Forget password? <a href="/resetPassword" class="font-semibold">Reset Password</a>
+                    </p>
 
                     <!-- Submit -->
                     <button type="submit" :disabled="isLoading"

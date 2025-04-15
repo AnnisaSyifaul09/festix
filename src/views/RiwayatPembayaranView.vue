@@ -3,7 +3,7 @@
         <NavbarItem></NavbarItem>
         <section class="py-12 px-6 md:px-0 max-w-screen-xl mx-auto">
             <div class="pt-15 p-2 min-h-screen flex flex-col">
-                <h1 class="text-2xl font-bold text-indigo-900 mb-8 text-left">TICKET HISTORY</h1>
+                <h1 class="text-2xl font-bold text-indigo-900 mb-8 text-left">PAYMENT HISTORY</h1>
 
                 <div v-if="loading" class="flex justify-center items-center min-h-screen">
                     <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>

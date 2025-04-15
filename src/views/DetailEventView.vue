@@ -166,7 +166,37 @@
                             class="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5 inline-block mr-2"></span>
                         Konfirmasi
                     </button>
+                    <!-- <button class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-all"
+                        @click="confirm2()" :disabled="isProcessing">
+                        <span v-if="isProcessing"
+                            class="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5 inline-block mr-2"></span>
+                        Konfirmasi
+                    </button> -->
                 </div>
+            </div>
+        </div>
+
+        <div v-if="confirmPayment"
+            class="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
+            <!-- Modal Content -->
+            <div class="bg-white p-6 rounded-2xl shadow-xl w-full max-w-md">
+                <h2 class="text-xl font-semibold mb-4">Upload Payment Proof</h2>
+
+                <label class="block mb-4">
+                    <span class="text-gray-700">Choose Image</span>
+                    <input type="file" accept="image/*" @change="handleFileUpload" class="mt-1 block w-full file:mr-4 file:py-2 file:px-4
+                                                                    file:rounded-full file:border-0
+                                                                    file:text-sm file:font-semibold
+                                                                    file:bg-blue-50 file:text-blue-700
+                                                                    hover:file:bg-blue-100" />
+                </label>
+                <div class="flex justify-end">
+                    <button v-on:click="payments1()"
+                        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                        Upload
+                    </button>
+                </div>
+
             </div>
         </div>
     </div>
@@ -228,6 +258,8 @@ export default {
             isProcessing: false,
             clientkey: import.meta.env.VITE_MIDTRANS_CLIENT_KEY,
             isLoading: true,
+            image_file: null,
+            confirmPayment: false,
         };
     },
     computed: {
@@ -395,7 +427,58 @@ export default {
                     this.resultJson = JSON.stringify(result, null, 2);
                 }
             });
-        }
+        },
+        confirm2() {
+            this.isProcessing = true;
+            this.confirmPayment = true;
+        },
+        payments1() {
+            const token = localStorage.getItem('token');
+            const username = localStorage.getItem('name');
+
+            if (!token || !username) {
+                router.push({ name: 'login' });
+            }
+
+            this.isProcessing = true;
+
+            console.log(this.selectedCategory)
+            let formData = new FormData();
+            formData.append("quantity", this.quantity);
+            formData.append("price", this.price);
+            formData.append("total", this.totalPayment);
+            formData.append("eventPriceId", this.selectedCategory.event_price_id),
+                formData.append('image_file', this.image_file);
+
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': 'Bearer ' + token
+                }
+            };
+
+            axios.post(`http://localhost:8000/api/payments/create/manual`, formData, config,
+            ).then((res) => {
+                console.log(res.data);
+                router.push({ name: 'riwayatPembayaran' });
+
+            }).catch((err) => {
+                if (err.response?.status === 401) {
+                    localStorage.removeItem('email');
+                    localStorage.removeItem('name');
+                    localStorage.removeItem('role_id');
+                    localStorage.removeItem('token');
+
+                    router.push({ name: 'login' });
+                } else {
+                    console.error("Error fetching venues data:", err);
+                }
+                console.error("Error fetching venues data:", err);
+            });
+        },
+        handleFileUpload(event) {
+            this.image_file = event.target.files[0];
+        },
     },
 };
 </script>
