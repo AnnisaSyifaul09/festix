@@ -9,46 +9,87 @@
             Add New
           </RouterLink>
         </div>
+
+        <!-- Search and Filter -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <input v-model="searchQuery" type="text" placeholder="Search events..."
+            class="px-4 py-2 rounded border border-gray-300 w-full md:w-1/3" />
+          <input v-model="filterDate" type="date" class="px-4 py-2 rounded border border-gray-300 w-full md:w-1/4" />
+        </div>
+
         <div v-if="isLoading" class="flex justify-center items-center h-32">
           <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-indigo-900"></div>
         </div>
+
         <div v-else
           class="pt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 w-full mx-auto justify-items-center">
-          <ManageEventCard v-for="(event, index) in data" class="shadow-lg hover:scale-105 transition duration-300"
-            :key="index" :event="event" :title="event.name" :date="event.date" :time="event.time"
+          <ManageEventCard v-for="(event, index) in paginatedData" :key="index"
+            class="shadow-lg hover:shadow-xl hover:shadow-indigo-500/55 transition duration-300" :event="event"
+            :title="event.name" :date="event.date" :time="event.time"
             :image="Array.isArray(event.event_image) && event.event_image.length > 0 ? event.event_image[0].link : ''"
             :location="event.vanue?.name" :id="event.id" @confirm-delete="confirmDelete" />
         </div>
-      </div>
-    </section>
 
-    <!-- Confirm Modal -->
-    <div v-if="confirmModal.show"
-      class="fixed inset-0 bg-white/15 backdrop-blur-lg flex items-center justify-center z-50">
-      <div class="bg-white text-black rounded-xl p-6 w-full max-w-md shadow-xl">
-        <h2 class="text-xl font-bold mb-4">Are you sure?</h2>
-        <p class="mb-6">Do you really want to delete this event? This action cannot be undone.</p>
-        <div class="flex justify-end gap-3">
-          <button @click="confirmModal.show = false"
-            class="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100">
-            Cancel
+        <!-- Pagination -->
+        <!-- <div class="flex justify-center mt-10 space-x-2">
+          <button @click="changePage(currentPage - 1)" :disabled="currentPage === 1"
+            class="px-3 py-1 bg-indigo-600 text-white rounded disabled:opacity-50">
+            Prev
           </button>
-          <button @click="deleteEvent(confirmModal.id)"
-            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-800">
-            Yes, Delete
+          <span class="font-semibold">Page {{ currentPage }} of {{ totalPages }}</span>
+          <button @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages"
+            class="px-3 py-1 bg-indigo-600 text-white rounded disabled:opacity-50">
+            Next
+          </button>
+        </div> -->
+        <div v-if="totalPages > 1" class="mt-10 flex flex-wrap justify-center gap-2">
+          <button @click="changePage(currentPage - 1)" :disabled="currentPage === 1"
+            class="px-4 py-2 bg-indigo-100 text-indigo-900 rounded hover:bg-indigo-200 disabled:opacity-50">
+            Prev
+          </button>
+
+          <button v-for="page in totalPages" :key="page" @click="changePage(page)" :class="[
+            'px-4 py-2 rounded',
+            currentPage === page
+              ? 'bg-indigo-500 text-white'
+              : 'bg-white border border-gray-300 text-indigo-900 hover:bg-gray-100'
+          ]">
+            {{ page }}
+          </button>
+
+          <button @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages"
+            class="px-4 py-2 bg-indigo-100 text-indigo-900 rounded hover:bg-indigo-200 disabled:opacity-50">
+            Next
           </button>
         </div>
+
+        <!-- Confirm Modal -->
+        <div v-if="confirmModal.show"
+          class="fixed inset-0 bg-white/15 backdrop-blur-lg flex items-center justify-center z-50">
+          <div class="bg-white text-black rounded-xl p-6 w-full max-w-md shadow-xl">
+            <h2 class="text-xl font-bold mb-4">Are you sure?</h2>
+            <p class="mb-6">Do you really want to delete this event? This action cannot be undone.</p>
+            <div class="flex justify-end gap-3">
+              <button @click="confirmModal.show = false"
+                class="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100">
+                Cancel
+              </button>
+              <button @click="deleteEvent(confirmModal.id)"
+                class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-800">
+                Yes, Delete
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
-    </div>
+    </section>
   </div>
 </template>
 
 <script>
 import NavbarAdmin from "@/components/NavbarAdmin.vue";
 import ManageEventCard from "@/components/ManageEventCard.vue";
-import IconDate from "@/components/icons/IconDate.vue";
-import IconTime from "@/components/icons/IconTime.vue";
-import IconLocation from "@/components/icons/IconLocation.vue";
 import axios from "axios";
 import router from "@/router";
 
@@ -56,19 +97,41 @@ export default {
   components: {
     NavbarAdmin,
     ManageEventCard,
-    IconDate,
-    IconTime,
-    IconLocation,
   },
   data() {
     return {
       isLoading: true,
       data: [],
+      filteredData: [],
       confirmModal: {
         show: false,
         id: null,
       },
+      searchQuery: "",
+      filterDate: "",
+      currentPage: 1,
+      itemsPerPage: 8,
     };
+  },
+  computed: {
+    totalPages() {
+      return Math.ceil(this.filteredData.length / this.itemsPerPage);
+    },
+    paginatedData() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      return this.filteredData.slice(start, start + this.itemsPerPage);
+    },
+  },
+  watch: {
+    searchQuery() {
+      this.applyFilters();
+    },
+    filterDate() {
+      this.applyFilters();
+    },
+    data() {
+      this.applyFilters();
+    },
   },
   mounted() {
     this.getItem();
@@ -85,10 +148,32 @@ export default {
           this.data = res.data.data;
         }
       }).catch((err) => {
-        console.error("Error fetching ticket data:", err);
+        console.error("Error fetching events:", err);
       }).finally(() => {
         this.isLoading = false;
       });
+    },
+    applyFilters() {
+      let filtered = this.data;
+
+      if (this.searchQuery) {
+        const q = this.searchQuery.toLowerCase();
+        filtered = filtered.filter(event =>
+          event.name.toLowerCase().includes(q)
+        );
+      }
+
+      if (this.filterDate) {
+        filtered = filtered.filter(event => event.date === this.filterDate);
+      }
+
+      this.filteredData = filtered;
+      this.currentPage = 1;
+    },
+    changePage(page) {
+      if (page >= 1 && page <= this.totalPages) {
+        this.currentPage = page;
+      }
     },
     confirmDelete(id) {
       this.confirmModal.id = id;
@@ -106,6 +191,7 @@ export default {
       }).then(() => {
         this.data = this.data.filter(e => e.id !== id);
         this.confirmModal.show = false;
+        this.applyFilters();
       }).catch((err) => {
         console.error("Error deleting event:", err);
         this.confirmModal.show = false;
@@ -114,3 +200,5 @@ export default {
   }
 };
 </script>
+
+<style scoped></style>

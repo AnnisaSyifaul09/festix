@@ -3,7 +3,7 @@
     <!-- Card dengan Router Link -->
     <router-link to="/kategori" class="block">
       <div
-        class="bg-indigo-900 w-full shadow-lg rounded-lg p-6 transition transform hover:scale-105 duration-300 cursor-pointer">
+        class="bg-indigo-900 w-full shadow-lg rounded-lg p-6 transition transform hover:shadow-xl hover:shadow-indigo-500/20 duration-300 cursor-pointer">
         <!-- Gambar -->
         <img class="w-full aspect-video object-cover rounded-lg" :src="image_link" alt="Event Image" />
 

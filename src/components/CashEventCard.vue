@@ -2,7 +2,7 @@
   <div @click="$emit('click')"
     class="group bg-white rounded-3xl shadow-xl overflow-hidden w-full max-w-5xl cursor-pointer transition duration-300 hover:shadow-2xl hover:-translate-y-1">
     <div class="relative">
-      <img :src="image" alt="Event Image" class="w-full h-64 object-cover" />
+      <img :src="image_link" alt="Event Image" class="w-full h-64 object-cover" />
       <div
         class="absolute top-3 right-3 bg-white/70 backdrop-blur-sm text-indigo-700 text-xs font-semibold px-3 py-1 rounded-full shadow">
         {{ ticketsSold }} Tickets
@@ -25,7 +25,7 @@
         </div>
         <div class="flex items-center gap-2">
           <IconTime class="w-5 h-5 text-indigo-300" />
-          <span>{{ time }}</span>
+          <span>{{ timeOnly }}</span>
         </div>
         <div class="flex items-center gap-2">
           <IconLocation class="w-5 h-5 text-indigo-300" />
@@ -35,7 +35,7 @@
 
       <div class="border-t border-indigo-700 pt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <p class="text-green-400 text-xl font-bold tracking-wide">
-          Revenue: ${{ totalRevenue.toFixed(2) }}
+          Revenue: ${{ totalRevenue }}
         </p>
         <p class="text-sm text-indigo-300">Click for more details</p>
       </div>
@@ -49,6 +49,13 @@ import IconTime from "@/components/icons/IconTime.vue";
 import IconLocation from "@/components/icons/IconLocation.vue";
 
 export default {
+  data() {
+    return {
+      image_link: this.image
+        ? `http://127.0.0.1:8000${this.image}`
+        : "/src/assets/noImage.png",
+    };
+  },
   props: {
     image: String,
     title: String,
@@ -57,6 +64,20 @@ export default {
     location: String,
     totalRevenue: Number,
     ticketsSold: Number
+  },
+  computed: {
+    dayOnly() {
+      return this.date.split('-')[2];
+    },
+    monthOnly() {
+      return this.date.split('-')[1];
+    },
+    yearOnly() {
+      return this.date.split('-')[0];
+    },
+    timeOnly() {
+      return this.time.split(" ")[1].slice(0, 5); // Ambil bagian jam dan menit
+    },
   },
   components: {
     IconDate,

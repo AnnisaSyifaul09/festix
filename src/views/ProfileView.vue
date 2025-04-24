@@ -16,12 +16,36 @@
         </div>
 
         <!-- Content Display After Data is Loaded -->
-        <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-10 w-full mx-auto justify-items-center">
-          <TicketCard v-for="(ticket, index) in data" :key="index"
-            :image="Array.isArray(ticket.event_price.event.event_image) && ticket.event_price.event.event_image.length > 0 ? ticket.event_price.event.event_image[0].link : ''"
-            :title="ticket.event_price.event.name" :date="ticket.event_price.event.date"
-            :time="ticket.event_price.event.time.split(' ')[1].slice(0, 5)"
-            :location="ticket.event_price.event.location" :id="ticket.id" :status="ticket.status" />
+        <div v-else>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-10 w-full mx-auto justify-items-center">
+            <TicketCard v-for="(ticket, index) in paginatedData" :key="index"
+              :image="Array.isArray(ticket.event_price.event.event_image) && ticket.event_price.event.event_image.length > 0 ? ticket.event_price.event.event_image[0].link : ''"
+              :title="ticket.event_price.event.name" :date="ticket.event_price.event.date"
+              :time="ticket.event_price.event.time.split(' ')[1].slice(0, 5)"
+              :location="ticket.event_price.event.location" :id="ticket.id" :status="ticket.status" />
+          </div>
+
+          <!-- Pagination Controls -->
+          <div v-if="totalPages > 1" class="mt-10 flex justify-center gap-2 flex-wrap">
+            <button @click="changePage(currentPage - 1)" :disabled="currentPage === 1"
+              class="px-4 py-2 bg-indigo-100 text-indigo-900 rounded hover:bg-indigo-200 disabled:opacity-50">
+              Prev
+            </button>
+
+            <button v-for="page in totalPages" :key="page" @click="changePage(page)" :class="[
+              'px-4 py-2 rounded',
+              currentPage === page
+                ? 'bg-indigo-500 text-white'
+                : 'bg-white border border-gray-300 text-indigo-900 hover:bg-gray-100'
+            ]">
+              {{ page }}
+            </button>
+
+            <button @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages"
+              class="px-4 py-2 bg-indigo-100 text-indigo-900 rounded hover:bg-indigo-200 disabled:opacity-50">
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -35,33 +59,28 @@ import TicketCard from "@/components/TicketCard.vue";
 import axios from "axios";
 import router from "@/router";
 
-
 export default {
   components: {
     NavbarItem, TicketCard, ProfileCard
   },
   data() {
     return {
-      tickets: [
-        {
-          image: "https://awsimages.detik.net.id/community/media/visual/2020/03/06/6ee251fb-59d2-4d12-bb31-4cbaa12f0450.jpeg?w=1200",
-          title: "LOREM IPSUM DOLOR",
-          date: "12 July 2025",
-          time: "18.00",
-          location: "Teater Taman Sriwedari",
-        },
-        {
-          image: "https://awsimages.detik.net.id/community/media/visual/2020/03/06/6ee251fb-59d2-4d12-bb31-4cbaa12f0450.jpeg?w=1200",
-          title: "LOREM IPSUM DOLOR",
-          date: "12 July 2025",
-          time: "18.00",
-          location: "Teater Taman Sriwedari",
-        },
-      ],
       me: {},
       data: [],
-      loading: true,  // Start loading state as true
+      loading: true,
+      currentPage: 1,
+      itemsPerPage: 6,
     };
+  },
+  computed: {
+    paginatedData() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      return this.data.slice(start, end);
+    },
+    totalPages() {
+      return Math.ceil(this.data.length / this.itemsPerPage);
+    }
   },
   mounted() {
     this.getItem();
@@ -81,18 +100,12 @@ export default {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       }).then((res) => {
-        console.log(res.data.data);
         this.me = res.data.data;
       }).catch((err) => {
         if (err.response?.status === 401) {
-          localStorage.removeItem('email');
-          localStorage.removeItem('name');
-          localStorage.removeItem('role_id');
-          localStorage.removeItem('token');
-
-          router.push({ name: 'login' });
+          this.logout();
         } else {
-          console.error("Error fetching venues data:", err);
+          console.error("Error fetching user data:", err);
         }
       });
 
@@ -102,23 +115,27 @@ export default {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       }).then((res) => {
-        console.log(res.data.data);
         this.data = res.data.data;
-        this.loading = false;  // Set loading to false when data is fetched
+        this.currentPage = 1;
+        this.loading = false;
       }).catch((err) => {
         if (err.response?.status === 401) {
-          localStorage.removeItem('email');
-          localStorage.removeItem('name');
-          localStorage.removeItem('role_id');
-          localStorage.removeItem('token');
-
-          router.push({ name: 'login' });
+          this.logout();
         } else {
-          console.error("Error fetching venues data:", err);
+          console.error("Error fetching ticket history:", err);
         }
-        this.loading = false;  // Also stop loading in case of error
+        this.loading = false;
       });
     },
+    changePage(page) {
+      if (page >= 1 && page <= this.totalPages) {
+        this.currentPage = page;
+      }
+    },
+    logout() {
+      localStorage.clear();
+      router.push({ name: 'login' });
+    }
   }
 };
 </script>

@@ -48,8 +48,10 @@
       <a href="/admin" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">DASHBOARD</a>
       <a href="/admin/events" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">EVENT</a>
       <a href="/admin/venues" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">VENUE</a>
-      <a href="/admin/verify" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">VERIFY TICKET</a>
-      <a href="/admin/cash" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">CASH REPORT</a>
+      <a href="/admin/verify" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">VERIFY
+        TICKET</a>
+      <a href="/admin/cash" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">CASH
+        REPORT</a>
       <a href="/admin/user" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">USERS</a>
     </div>
   </nav>

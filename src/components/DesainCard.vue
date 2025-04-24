@@ -1,8 +1,11 @@
 <template>
-  <div class="card">
+  <div class="w-sm shadow-xl shadow-indigo-500/50 rounded-lg overflow-hidden ">
     <img class="w-full aspect-video object-cover" :src="image_link" :alt="title">
     <div class="card-body">
-      <h2 class="card-title">{{ title }}</h2>
+      <h2 class="text-3xl font-bold text-indigo-900">{{ title }}</h2>
+      <p class="font-semibold text-sm text-indigo-900">
+        {{ qrCode }}
+      </p>
       <div class="details">
         <p>
           <IconDate class="icon" /> {{ date }}
@@ -13,14 +16,17 @@
         <p>
           <IconLocation class="icon" /> {{ location }}
         </p>
+
       </div>
       <div class="flex justify-between items-end mt-15">
         <div class="">
           <p class="font-bold text-lg">{{ category }}</p>
           <p class="font-bold text-lg">{{ seatNumber }}</p>
+
         </div>
         <QrCode :qrCode="qrCode" />
       </div>
+
     </div>
   </div>
 </template>

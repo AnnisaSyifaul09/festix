@@ -1,6 +1,6 @@
 <template>
     <div
-        class="relative bg-white rounded-2xl shadow-lg p-5 w-full max-w-sm overflow-hidden group transition hover:shadow-xl">
+        class="relative bg-white rounded-2xl shadow-lg p-5 w-full max-w-sm overflow-hidden group transition hover:shadow-xl hover:shadow-indigo-500/20">
         <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
 
         <div class="flex flex-col gap-4">

@@ -10,6 +10,12 @@
           </RouterLink>
         </div>
 
+        <!-- Search Input -->
+        <div class="mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
+          <input v-model="searchQuery" @input="handleSearch" type="text"
+            placeholder="Search venue by name or address..." class="border px-4 py-2 rounded-lg w-full md:w-1/3" />
+        </div>
+
         <!-- Loading Spinner -->
         <div v-if="isLoading" class="flex justify-center items-center h-32">
           <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-indigo-900"></div>
@@ -18,10 +24,18 @@
         <!-- Venue Cards -->
         <div v-else
           class="pt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 w-full container mx-auto justify-items-center">
-          <ManageVenueCard v-for="venue in data" :key="venue.id" :id="venue.id" :name="venue.name"
+          <ManageVenueCard v-for="venue in paginatedVenues" :key="venue.id" :id="venue.id" :name="venue.name"
             :address="venue.address"
             :image="Array.isArray(venue.venue_image) && venue.venue_image.length > 0 ? venue.venue_image[0].link : ''"
             :location="venue.address" @deleted="handleDeleted" />
+        </div>
+
+        <!-- Pagination -->
+        <div class="pt-8 flex justify-center">
+          <button v-for="page in totalPages" :key="page" @click="currentPage = page"
+            :class="['mx-1 px-3 py-1 rounded-md', currentPage === page ? 'bg-indigo-700 text-white' : 'bg-gray-200']">
+            {{ page }}
+          </button>
         </div>
       </div>
     </section>
@@ -44,9 +58,30 @@ export default {
 
   data() {
     return {
-      data: [],        // data venue dari API
-      isLoading: true, // status loading
+      data: [],
+      isLoading: true,
+      searchQuery: '',
+      currentPage: 1,
+      itemsPerPage: 8,
     };
+  },
+
+  computed: {
+    filteredVenues() {
+      if (!this.searchQuery) return this.data;
+      const query = this.searchQuery.toLowerCase();
+      return this.data.filter(venue =>
+        venue.name.toLowerCase().includes(query) ||
+        venue.address.toLowerCase().includes(query)
+      );
+    },
+    totalPages() {
+      return Math.ceil(this.filteredVenues.length / this.itemsPerPage);
+    },
+    paginatedVenues() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      return this.filteredVenues.slice(start, start + this.itemsPerPage);
+    },
   },
 
   mounted() {
@@ -54,7 +89,6 @@ export default {
   },
 
   methods: {
-    // Ambil data venue dari API
     getItem() {
       this.isLoading = true;
       axios.get(`http://localhost:8000/api/venues`, {
@@ -77,9 +111,12 @@ export default {
       });
     },
 
-    // Tangani event delete dari child component
     handleDeleted(deletedId) {
       this.data = this.data.filter(venue => venue.id !== deletedId);
+    },
+
+    handleSearch() {
+      this.currentPage = 1;
     }
   }
 };
