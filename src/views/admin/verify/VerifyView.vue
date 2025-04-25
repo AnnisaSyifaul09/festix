@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NavbarAdmin></NavbarAdmin>
+        <NavbarAdmin />
 
         <section class="container mx-auto mt-20 px-4 md:w-1/2">
             <div class="text-lg font-semibold mb-4">Scan QR Code</div>
@@ -8,15 +8,23 @@
                 <div id="qr-reader"></div>
             </div>
 
-            <div class="flex mt-5 gap-2">
-                <input type="text" class="px-4 py-2 w-full border rounded-lg" v-model="code"
-                    placeholder="Scan QR Code" />
-                <button class="px-4 py-2 border rounded-lg active:bg-slate-500" @click="submit">Submit</button>
+            <div class="w-full">
+                <div class="grid grid-cols-2">
+                    <p>Event</p>
+                    <select v-model="selectedEventId" class="px-4 py-2 w-full border rounded-lg">
+                        <option value="">All</option>
+                        <option v-for="(event, index) in data" :key="index" :value="event.id">
+                            {{ `${event.name} | ${event.date} | ${event.time.split(' ')[1].slice(0, 5)}` }}
+                        </option>
+                    </select>
+                </div>
+                <div class="flex mt-5 gap-2">
+                    <input type="text" class="px-4 py-2 w-full border rounded-lg" v-model="code"
+                        placeholder="Scan QR Code" />
+                    <button class="px-4 py-2 border rounded-lg active:bg-slate-500" @click="submit">Submit</button>
+                </div>
             </div>
         </section>
-        <!-- 
-        <h2>QR Code Scanner</h2>
-        <p>Scanned Result: {{ code }}</p> -->
 
         <transition name="fade" class="mt-15">
             <div v-if="alertMessage" :class="alertClass"
@@ -37,27 +45,33 @@ export default {
     components: {
         NavbarAdmin,
     },
-    setup() {
-        const code = ref('');
-        const alertMessage = ref('');
-        const alertClass = ref('');
-        const qrScanner = ref(null);
-
-        const showAlert = (message, colorClass) => {
-            alertMessage.value = message;
-            alertClass.value = colorClass;
-            setTimeout(() => {
-                alertMessage.value = "";
-            }, 5000);
+    data() {
+        return {
+            data: [],
+            selectedEventId: '',
+            code: '',
+            alertMessage: '',
+            alertClass: '',
         };
-
-        const submit = () => {
-            if (!code.value) {
-                showAlert("❌ Input QR Code!", "bg-red-200");
+    },
+    methods: {
+        showAlert(message, colorClass) {
+            this.alertMessage = message;
+            this.alertClass = colorClass;
+            setTimeout(() => {
+                this.alertMessage = "";
+            }, 5000);
+        },
+        submit() {
+            if (!this.code) {
+                this.showAlert("❌ Input QR Code!", "bg-red-200");
                 return;
             }
 
-            axios.post("http://localhost:8000/api/verify-ticket", { code: code.value }, {
+            axios.post("http://localhost:8000/api/verify-ticket", {
+                code: this.code,
+                event_id: this.selectedEventId,
+            }, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                     "Content-Type": "application/json",
@@ -65,63 +79,85 @@ export default {
             })
                 .then((res) => {
                     console.log(res.data);
-                    showAlert("✅ Success", "bg-green-200");
+                    this.showAlert("✅ Success", "bg-green-200");
                 })
                 .catch((err) => {
                     console.error(err);
-                    showAlert("❌ Failed", "bg-red-200");
+                    this.showAlert("❌ Failed", "bg-red-200");
                 });
-        };
-
-        const onScanSuccess = (decodedText) => {
-            code.value = decodedText;
-
-            axios.post("http://localhost:8000/api/verify-ticket", { code: code.value }, {
+        },
+        getItem() {
+            axios.get(`http://localhost:8000/api/events`, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + localStorage.getItem("token"),
                 },
-            })
-                .then((res) => {
-                    console.log(res.data);
-                    showAlert("✅ Success", "bg-green-200");
+            }).then((res) => {
+                if (res.data?.data) {
+                    this.data = res.data.data;
+
+                    // ✅ Pilih otomatis event pertama saat berhasil load
+                    if (this.data.length > 0) {
+                        this.selectedEventId = this.data[0].id;
+                    }
+                }
+            }).catch((err) => {
+                if (err.response?.status === 401) {
+                    localStorage.clear();
+                    this.$router.push({ name: 'login' });
+                } else {
+                    console.error("Error fetching events data:", err);
+                }
+            });
+        }
+    },
+    mounted() {
+        this.getItem();
+
+        const qrScanner = new Html5Qrcode("qr-reader");
+        qrScanner.start(
+            { facingMode: "environment" },
+            {
+                fps: 10,
+                qrbox: { width: 250, height: 250 },
+                aspectRatio: 1.0,
+                rememberLastUsedCamera: true,
+                showTorchButtonIfSupported: true,
+            },
+            (decodedText) => {
+                this.code = decodedText;
+
+                axios.post("http://localhost:8000/api/verify-ticket", {
+                    code: this.code,
+                    event_id: this.selectedEventId,
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                        "Content-Type": "application/json",
+                    },
                 })
-                .catch((err) => {
-                    console.error(err);
-                    showAlert("❌ Failed", "bg-red-200");
-                });
-        };
-
-        const onScanFailure = (error) => {
-            // console.warn(`QR Code scan failed: ${error}`);
-        };
-
-        onMounted(() => {
-            qrScanner.value = new Html5Qrcode("qr-reader");
-            qrScanner.value.start(
-                { facingMode: "environment" }, // Gunakan kamera belakang jika tersedia
-                {
-                    fps: 10,
-                    qrbox: { width: 250, height: 250 },
-                    aspectRatio: 1.0,
-                    rememberLastUsedCamera: true,
-                    showTorchButtonIfSupported: true,
-                },
-                onScanSuccess,
-                onScanFailure
-            ).catch(err => console.error("Camera start error:", err));
-        });
-
-        onUnmounted(() => {
-            if (qrScanner.value) {
-                qrScanner.value.stop().then(() => {
-                    qrScanner.value.clear();
-                }).catch(err => console.error("Camera stop error:", err));
+                    .then((res) => {
+                        console.log(res.data);
+                        this.showAlert("✅ Success", "bg-green-200");
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        this.showAlert("❌ Failed", "bg-red-200");
+                    });
+            },
+            (error) => {
+                // handle scan error if needed
             }
-        });
+        ).catch(err => console.error("Camera start error:", err));
 
-        return { code, alertMessage, alertClass, submit };
-    }
+        this.qrScanner = qrScanner;
+    },
+    unmounted() {
+        if (this.qrScanner) {
+            this.qrScanner.stop().then(() => {
+                this.qrScanner.clear();
+            }).catch(err => console.error("Camera stop error:", err));
+        }
+    },
 };
 </script>
 

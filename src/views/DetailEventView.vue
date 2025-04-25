@@ -160,18 +160,18 @@
                 <div class="flex justify-end mt-4 gap-2">
                     <button class="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-500 transition-all"
                         @click="showModal = false">Batal</button>
-                    <button class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-all"
+                    <!-- <button class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-all"
                         @click="payments()" :disabled="isProcessing">
                         <span v-if="isProcessing"
                             class="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5 inline-block mr-2"></span>
                         Konfirmasi
-                    </button>
-                    <!-- <button class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-all"
+                    </button> -->
+                    <button class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-all"
                         @click="confirm2()" :disabled="isProcessing">
                         <span v-if="isProcessing"
                             class="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5 inline-block mr-2"></span>
                         Konfirmasi
-                    </button> -->
+                    </button>
                 </div>
             </div>
         </div>

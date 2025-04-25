@@ -4,9 +4,9 @@
         <section class="py-12 px-6 md:px-0 max-w-screen-xl mx-auto">
             <div class="pt-10 p-2 min-h-screen flex flex-col">
                 <div class="py-5 flex flex-row justify-between items-center">
-                    <h1 class="text-2xl font-bold text-indigo-900 leading-tight">Manage User</h1>
-                    <RouterLink :to="{ name: 'userCreate' }"
-                        class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">Add New</RouterLink>
+                    <h1 class="text-2xl font-bold text-indigo-900 leading-tight">Manage Payments</h1>
+                    <!-- <RouterLink :to="{ name: 'userCreate' }"
+                        class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">Add New</RouterLink> -->
                 </div>
 
                 <div class="pt-10 w-full">
@@ -203,13 +203,14 @@ export default {
         async getItem() {
             this.isLoading = true;
             try {
-                const res = await axios.get(`http://localhost:8000/api/admin/payments/manual`, {
+                const res = await axios.get(`http://localhost:8000/api/admin/payments`, {
                     headers: {
                         Authorization: "Bearer " + localStorage.getItem("token"),
                     },
                 });
                 this.isLoading = false;
                 if (res.data?.data) {
+                    console.log(res.data.data);
                     this.data = res.data.data;
                 }
             } catch (err) {

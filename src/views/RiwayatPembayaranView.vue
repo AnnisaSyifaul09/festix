@@ -98,6 +98,7 @@ export default {
                     Authorization: "Bearer " + localStorage.getItem("token"),
                 },
             }).then((res) => {
+                console.log(res.data.data);
                 this.data = res.data.data;
                 this.currentPage = 1; // reset pagination when data is loaded
             }).catch((err) => {
