@@ -9,8 +9,8 @@
             </div>
 
             <div class="w-full">
-                <div class="grid grid-cols-2">
-                    <p>Event</p>
+                <div class="grid [grid-template-columns:1fr_3fr] items-center">
+                    <h3 class="text-xl font-semibold">Event</h3>
                     <select v-model="selectedEventId" class="px-4 py-2 w-full border rounded-lg">
                         <option value="">All</option>
                         <option v-for="(event, index) in data" :key="index" :value="event.id">

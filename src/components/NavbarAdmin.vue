@@ -36,8 +36,8 @@
           <RouterLink :to="{ name: 'profileAdmin' }"
             class="block px-4 py-2 text-indigo-900 hover:bg-indigo-100 hover:text-indigo-700 transition-all">
             Settings</RouterLink>
-          <a href="#"
-            class="block px-4 py-2 text-indigo-900 hover:bg-indigo-100 hover:text-indigo-700 transition-all">Logout</a>
+          <button @click="logout"
+            class="block px-4 py-2 w-full text-indigo-900 text-start hover:bg-indigo-100 hover:text-indigo-700 transition-all">Logout</button>
         </div>
       </div>
     </div>
@@ -59,6 +59,7 @@
 </template>
 <script>
 import { RouterLink } from 'vue-router';
+import router from "@/router";
 
 export default {
   data() {
@@ -81,6 +82,14 @@ export default {
     toggleMobileMenu() {
       this.mobileMenuOpen = !this.mobileMenuOpen;
     },
+    logout() {
+      localStorage.removeItem('email');
+      localStorage.removeItem('name');
+      localStorage.removeItem('role_id');
+      localStorage.removeItem('token');
+
+      router.push({ name: 'login' });
+    }
   },
 };
 </script>

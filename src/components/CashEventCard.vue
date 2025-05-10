@@ -35,7 +35,7 @@
 
       <div class="border-t border-indigo-700 pt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <p class="text-green-400 text-xl font-bold tracking-wide">
-          Revenue: ${{ totalRevenue }}
+          Revenue : {{ formatToIDR(totalRevenue) }}
         </p>
         <p class="text-sm text-indigo-300">Click for more details</p>
       </div>
@@ -64,6 +64,15 @@ export default {
     location: String,
     totalRevenue: Number,
     ticketsSold: Number
+  },
+  methods: {
+    formatToIDR(value) {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 0,
+      }).format(value);
+    },
   },
   computed: {
     dayOnly() {

@@ -94,7 +94,7 @@
             class="border border-gray-200 rounded-lg p-4 flex justify-between items-center hover:shadow transition">
             <div>
               <h3 class="text-lg font-semibold text-indigo-800">{{ category.seat_category_name }}</h3>
-              <p class="text-sm text-gray-500">Rp{{ category.price.toLocaleString() }}</p>
+              <p class="text-sm text-gray-500">{{ formatToIDR(category.price.toLocaleString()) }}</p>
             </div>
             <div class="text-right">
               <p class="text-xl font-bold text-green-600">{{ category.total_ticket }}</p>
@@ -103,8 +103,8 @@
         </div>
 
         <div class="flex justify-between items-center mt-6 border-t pt-4">
-          <h2>Total </h2>
-          <p class="text-xl font-bold text-green-600">{{ selectedEvent.total_cash }}</p>
+          <h2 class="font-semibold text-xl">Total </h2>
+          <p class="text-xl font-bold text-green-600"> {{ formatToIDR(selectedEvent.total_cash) }}</p>
         </div>
 
         <button @click="closeModal"
@@ -167,6 +167,13 @@ export default {
     this.getItem();
   },
   methods: {
+    formatToIDR(value) {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 0,
+      }).format(value);
+    },
     selectEvent(event) {
       this.selectedEvent = event;
     },

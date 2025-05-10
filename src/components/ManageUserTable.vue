@@ -1,39 +1,42 @@
 <template>
-  <div class="overflow-x-auto w-full">
-    <table class="min-w-full bg-white rounded-xl shadow-lg">
-      <thead class="bg-indigo-900 text-white">
-        <tr>
-          <th class="py-3 px-4 text-left">Username</th>
-          <th class="py-3 px-4 text-left">Full Name</th>
-          <th class="py-3 px-4 text-left">Email</th>
-          <th class="py-3 px-4 text-left">Role</th>
-          <th class="py-3 px-4 text-center">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="user in users" :key="user.id" class="border-b hover:bg-gray-50">
-          <td class="py-3 px-4">{{ user.username }}</td>
-          <td class="py-3 px-4">{{ user.name }}</td>
-          <td class="py-3 px-4">{{ user.email }}</td>
-          <td class="py-3 px-4">
-            <span :class="getRoleBadgeClass(user.role.name)">{{ user.role.name }}</span>
-          </td>
-          <td class="py-3 px-4">
-            <div class="flex justify-center gap-2">
-              <RouterLink :to="{ name: 'userEdit', params: { id: user.id } }"
-                class="bg-indigo-500 text-white px-3 py-1 rounded hover:bg-indigo-700 transition-colors">
-                Edit
-              </RouterLink>
-              <button @click="$emit('delete', user.id)"
-                class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 transition-colors">
-                Delete
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="bg-white p-6 rounded-lg shadow-lg">
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white rounded-xl ">
+        <thead class="bg-gray-50 ">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Full Name</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="user in users" :key="user.id" class="border-b border-gray-300 hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ user.username }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ user.name }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ user.email }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <span :class="getRoleBadgeClass(user.role.name)">{{ user.role.name }}</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <div class="flex justify-center gap-2">
+                <RouterLink :to="{ name: 'userEdit', params: { id: user.id } }"
+                  class="bg-indigo-500 text-white px-3 py-1 rounded hover:bg-indigo-700 transition-colors">
+                  Edit
+                </RouterLink>
+                <button @click="$emit('delete', user.id)"
+                  class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 transition-colors">
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
+
 </template>
 
 <script>

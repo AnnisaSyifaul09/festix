@@ -40,7 +40,7 @@
       <div v-else class=" md:flex space-x-12">
         <a href="/login"
           class="font-semibold text-indigo-900 uppercase tracking-wide hover:text-indigo-700 transition-all">Login</a>
-        <a href="/register"
+        <a href="/signin"
           class="font-semibold text-indigo-900 uppercase tracking-wide hover:text-indigo-700 transition-all">Register</a>
 
       </div>

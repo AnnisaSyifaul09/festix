@@ -5,14 +5,15 @@
       <div class="pt-10 p-2 min-h-screen flex flex-col">
         <div class="py-5 flex flex-row justify-between items-center">
           <h1 class="text-2xl font-bold text-indigo-900 leading-tight">Manage User</h1>
-          <RouterLink :to="{ name: 'userCreate' }" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+          <RouterLink :to="{ name: 'userCreate' }"
+            class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-lg hover:bg-indigo-800">
             Add New
           </RouterLink>
         </div>
 
         <div class="mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <input v-model="searchQuery" @input="handleSearch" type="text" placeholder="Search by name or email..."
-            class="border px-4 py-2 rounded-lg w-full md:w-1/3" />
+            class="border border-gray-300  px-4 py-2 rounded-lg w-full md:w-1/3" />
         </div>
 
         <div class="pt-4 w-full">

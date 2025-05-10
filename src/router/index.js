@@ -28,6 +28,7 @@ import AdminProfileView from "@/views/admin/profile/AdminProfileView.vue";
 import UpdateAdminProfileView from "@/views/admin/profile/UpdateAdminProfileView.vue";
 import RiwayatPembayaranView from "@/views/RiwayatPembayaranView.vue";
 import IndexPaymentView from "@/views/admin/payment/IndexPaymentView.vue";
+import AdminLoginView from "@/views/admin/login/AdminLoginView.vue";
 
 const userRole = import.meta.env.VITE_USER_ROLE;
 const adminRole = import.meta.env.VITE_ADMIN_ROLE;
@@ -79,31 +80,55 @@ const router = createRouter({
       path: "/profile",
       name: "profile",
       component: ProfileView,
+      meta: {
+        requiresAuth: true,
+        role: [userRole, superAdminRole],
+      },
     },
     {
       path: "/riwayat",
       name: "riwayat",
       component: RiwayatView,
+      meta: {
+        requiresAuth: true,
+        role: [userRole, superAdminRole],
+      },
     },
     {
       path: "/riwayat/pembayaran",
       name: "riwayatPembayaran",
       component: RiwayatPembayaranView,
+      meta: {
+        requiresAuth: true,
+        role: [userRole, superAdminRole],
+      },
     },
     {
       path: "/riwayat/:id",
       name: "detail",
       component: DetailTiketView,
+      meta: {
+        requiresAuth: true,
+        role: [userRole, superAdminRole],
+      },
     },
     {
       path: "/events/:id",
       name: "detailEvent",
       component: DetailEventView,
+      meta: {
+        requiresAuth: true,
+        role: [userRole, superAdminRole],
+      },
     },
     {
       path: "/payment-confirmation",
       name: "paymentConfirmation",
       component: PaymentConfirmView,
+      meta: {
+        requiresAuth: true,
+        role: [userRole, superAdminRole],
+      },
     },
     {
       path: "/admin",
@@ -118,76 +143,141 @@ const router = createRouter({
       path: "/admin/events",
       name: "events",
       component: EventIndex,
+      meta: {
+        requiresAuth: true,
+        role: [adminRole, managerRole, superAdminRole],
+      },
     },
     {
       path: "/admin/events/create",
       name: "eventCreate",
       component: CreateEventView,
+      meta: {
+        requiresAuth: true,
+        role: [adminRole, managerRole, superAdminRole],
+      },
     },
     {
       path: "/admin/events/:id",
       name: "eventShow",
       component: ShowEventView,
+      meta: {
+        requiresAuth: true,
+        role: [adminRole, managerRole, superAdminRole],
+      },
     },
     {
       path: "/admin/events/update/:id",
       name: "eventUpdate",
       component: EditEventView,
+      meta: {
+        requiresAuth: true,
+        role: [adminRole, managerRole, superAdminRole],
+      },
     },
     {
       path: "/admin/verify",
       name: "verify",
       component: VerifyView,
+      meta: {
+        requiresAuth: true,
+        role: [adminRole, managerRole, superAdminRole],
+      },
     },
     {
       path: "/admin/venues",
       name: "venues",
       component: VenueIndex,
+      meta: {
+        requiresAuth: true,
+        role: [adminRole, managerRole, superAdminRole],
+      },
     },
     {
       path: "/admin/venues/create",
       name: "venuesCreate",
       component: CreateVenueView,
+      meta: {
+        requiresAuth: true,
+        role: [managerRole, superAdminRole],
+      },
     },
     {
       path: "/admin/venues/update/:id",
       name: "venuesUpdate",
       component: EditVenueView,
+      meta: {
+        requiresAuth: true,
+        role: [managerRole, superAdminRole],
+      },
     },
     {
       path: "/admin/cash",
       name: "cash",
       component: CashIndex,
+      meta: {
+        requiresAuth: true,
+        role: [managerRole, superAdminRole],
+      },
     },
     {
       path: "/admin/user",
       name: "user",
       component: UserIndex,
+      meta: {
+        requiresAuth: true,
+        role: [managerRole, superAdminRole],
+      },
     },
     {
       path: "/admin/user/create",
       name: "userCreate",
       component: UserCreate,
+      meta: {
+        requiresAuth: true,
+        role: [managerRole, superAdminRole],
+      },
     },
     {
       path: "/admin/user/edit/:id",
       name: "userEdit",
       component: UserEdit,
+      meta: {
+        requiresAuth: true,
+        role: [managerRole, superAdminRole],
+      },
     },
     {
       path: "/admin/profile",
       name: "profileAdmin",
       component: AdminProfileView,
+      meta: {
+        requiresAuth: true,
+        role: [adminRole, managerRole, superAdminRole],
+      },
     },
     {
       path: "/admin/profile/update",
       name: "updateProfileAdmin",
       component: UpdateAdminProfileView,
+      meta: {
+        requiresAuth: true,
+        role: [adminRole, managerRole, superAdminRole],
+      },
     },
     {
       path: "/admin/payments",
       name: "adminPayments",
       component: IndexPaymentView,
+      meta: {
+        requiresAuth: true,
+        role: [adminRole, managerRole, superAdminRole],
+      },
+    },
+    {
+      path: "/admin/login",
+      name: "adminLogin",
+      component: AdminLoginView,
     },
   ],
 });
