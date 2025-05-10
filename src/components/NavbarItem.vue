@@ -12,12 +12,12 @@
 
       <!-- Menu Kiri -->
       <div class="hidden md:flex space-x-12">
-        <a href="/home"
+        <a href="/"
           class="font-semibold text-indigo-900 uppercase tracking-wide hover:text-indigo-700 transition-all">Home</a>
         <a href="/kategori"
           class="font-semibold text-indigo-900 uppercase tracking-wide hover:text-indigo-700 transition-all">Events</a>
-        <a href="/home"
-          class="font-semibold text-indigo-900 uppercase tracking-wide hover:text-indigo-700 transition-all">Places</a>
+        <!-- <a href="/home"
+          class="font-semibold text-indigo-900 uppercase tracking-wide hover:text-indigo-700 transition-all">Places</a> -->
       </div>
 
       <!-- Dropdown Profile -->
