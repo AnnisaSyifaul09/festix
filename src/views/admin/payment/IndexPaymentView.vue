@@ -9,28 +9,48 @@
                         class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">Add New</RouterLink> -->
                 </div>
 
-                <div class="pt-10 w-full">
-                    <div class="overflow-x-auto rounded-2xl shadow-lg">
-                        <table class="min-w-full bg-white text-sm text-gray-700">
-                            <thead class="bg-gray-100 text-left text-xs font-semibold uppercase text-gray-500">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white rounded-xl">
+                            <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-6 py-4">Tanggal</th>
-                                    <th class="px-6 py-4">Status</th>
-                                    <th class="px-6 py-4">Event</th>
-                                    <th class="px-6 py-4">Tanggal Event</th>
-                                    <th class="px-6 py-4">Harga Satuan</th>
-                                    <th class="px-6 py-4">Jumlah</th>
-                                    <th class="px-6 py-4">Harga Total</th>
-                                    <th class="px-6 py-4">Image</th>
-                                    <th class="px-6 py-4 text-center">Actions</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Tanggal</th>
+                                    <th
+                                        class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Status</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Event</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Tanggal Event</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Harga Satuan</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Jumlah</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Harga Total</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Image</th>
+                                    <th
+                                        class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-center">
+                                        Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
-                                <tr v-for="payment in data" :key="payment.id" class="hover:bg-gray-50">
-                                    <td class="px-6 py-4">{{ formatDate(payment.created_at) }}</td>
-                                    <td class="px-6 py-4">
+                                <tr v-for="payment in data" :key="payment.id"
+                                    class="border-b border-gray-300 hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{
+                                        formatDate(payment.created_at) }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                                         <span :class="[
-                                            'text-xs font-semibold px-3 py-1 rounded-full',
+                                            'text-xs font-semibold px-3 py-1 rounded-full w-full text-center',
                                             payment.status === 'success' ? 'bg-green-100 text-green-600' :
                                                 payment.status === 'pending' ? 'bg-yellow-100 text-yellow-600' :
                                                     payment.status === 'expired' ? 'bg-red-100 text-red-600' :
@@ -39,26 +59,32 @@
                                             {{ payment.status }}
                                         </span>
                                     </td>
-                                    <td class="px-6 py-4">{{ payment.event_price.event.name }}</td>
-                                    <td class="px-6 py-4">{{ payment.event_price.event.date }}</td>
-                                    <td class="px-6 py-4">{{ formatToIDR(payment.price) }}</td>
-                                    <td class="px-6 py-4">{{ payment.amount_ticket }}</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900">{{
-                                        formatToIDR(payment.total_payment) }}</td>
-                                    <td class="px-6 py-4 font-medium text-gray-900">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{
+                                        payment.event_price.event.name }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{
+                                        payment.event_price.event.date }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{
+                                        formatToIDR(payment.price) }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{
+                                        payment.amount_ticket }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-medium">
+                                        {{
+                                            formatToIDR(payment.total_payment) }}</td>
+                                    <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500 font-medium ">
                                         <button @click="openImageModal(payment.image)"
-                                            class="rounded-xl bg-blue-500 px-3 py-1 text-white hover:bg-blue-600 transition">
+                                            class="rounded-xl bg-blue-100 px-3 py-1 text-blue-700 hover:bg-blue-300 transition">
                                             Show
                                         </button>
                                     </td>
-                                    <td class="px-6 py-4 space-x-2">
-                                        <div v-if="payment.status === 'pending'" class="text-center">
+                                    <td class="px-2 py-2 text-sm text-gray-500 space-x-2 w-32">
+                                        <div v-if="payment.status === 'pending'"
+                                            class="text-center flex flex-wrap gap-2">
                                             <button v-on:click="openConfirmModal(payment.id, 'confirm')"
-                                                class="rounded-xl bg-green-500 px-3 py-1 text-white hover:bg-green-600 transition">
+                                                class="rounded-xl w-full bg-green-100 px-3 py-1 text-green-700 hover:bg-green-300 transition">
                                                 Confirm
                                             </button>
                                             <button v-on:click="openConfirmModal(payment.id, 'deny')"
-                                                class="rounded-xl bg-red-500 px-3 py-1 text-white hover:bg-red-600 transition">
+                                                class="rounded-xl w-full bg-red-100 px-3 py-1 text-red-700 hover:bg-red-300 transition">
                                                 Denied
                                             </button>
                                         </div>

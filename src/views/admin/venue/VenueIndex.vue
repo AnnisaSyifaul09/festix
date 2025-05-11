@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavbarAdmin />
-    <section class="py-12 px-6 md:px-0 container mx-auto">
+    <section class="py-12 px-6 md:px-0 max-w-screen-xl mx-auto">
       <div class="pt-10 p-4 min-h-screen flex flex-col">
         <div class="py-5 flex flex-row justify-between items-center">
           <h1 class="text-2xl font-bold text-indigo-900 leading-tight">Manage Venue</h1>

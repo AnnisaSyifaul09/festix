@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavbarAdmin></NavbarAdmin>
-    <section class="py-12 px-6 md:px-0 container mx-auto">
+    <section class="py-12 px-6 md:px-0 max-w-screen-xl mx-auto">
       <div class="pt-10 p-4 min-h-screen flex flex-col">
         <div class="py-5 flex flex-row justify-between items-center">
           <h1 class="text-2xl font-bold text-indigo-900 leading-tight">Manage Event</h1>
@@ -15,7 +15,10 @@
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <input v-model="searchQuery" type="text" placeholder="Search events..."
             class="px-4 py-2 rounded border border-gray-300 w-full md:w-1/3" />
-          <input v-model="filterDate" type="date" class="px-4 py-2 rounded border border-gray-300 w-full md:w-1/4" />
+          <!-- Filter by Month and Year -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <input v-model="filterMonth" type="month" class="px-4 py-2 rounded border border-gray-300 w-full " />
+          </div>
         </div>
 
         <div v-if="isLoading" class="flex justify-center items-center h-32">
@@ -25,7 +28,7 @@
         <div v-else
           class="pt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 w-full mx-auto justify-items-center">
           <ManageEventCard v-for="(event, index) in paginatedData" :key="index"
-            class="shadow-lg hover:shadow-xl hover:shadow-indigo-500/55 transition duration-300" :event="event"
+            class="shadow-lg hover:shadow-lg hover:shadow-indigo-500/30 transition duration-300" :event="event"
             :title="event.name" :date="event.date" :time="event.time"
             :image="Array.isArray(event.event_image) && event.event_image.length > 0 ? event.event_image[0].link : ''"
             :location="event.vanue?.name" :id="event.id" @confirm-delete="confirmDelete" />
@@ -109,7 +112,7 @@ export default {
         id: null,
       },
       searchQuery: "",
-      filterDate: "",
+      filterMonth: "",  // Mengubah menjadi filterMonth
       currentPage: 1,
       itemsPerPage: 8,
     };
@@ -127,7 +130,7 @@ export default {
     searchQuery() {
       this.applyFilters();
     },
-    filterDate() {
+    filterMonth() {  // Menambahkan watch untuk filterMonth
       this.applyFilters();
     },
     data() {
@@ -157,6 +160,7 @@ export default {
     applyFilters() {
       let filtered = this.data;
 
+      // Filter berdasarkan searchQuery
       if (this.searchQuery) {
         const q = this.searchQuery.toLowerCase();
         filtered = filtered.filter(event =>
@@ -164,8 +168,16 @@ export default {
         );
       }
 
-      if (this.filterDate) {
-        filtered = filtered.filter(event => event.date === this.filterDate);
+      // Filter berdasarkan filterMonth
+      if (this.filterMonth) {
+        filtered = filtered.filter(event => {
+          const eventDate = new Date(event.date);
+          const filterDate = new Date(this.filterMonth);
+          return (
+            eventDate.getMonth() === filterDate.getMonth() &&
+            eventDate.getFullYear() === filterDate.getFullYear()
+          );
+        });
       }
 
       this.filteredData = filtered;
@@ -200,6 +212,7 @@ export default {
     },
   }
 };
+
 </script>
 
 <style scoped></style>

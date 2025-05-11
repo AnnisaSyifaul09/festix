@@ -1,27 +1,28 @@
 <template>
-  <div class="bg-indigo-900 text-white rounded-xl shadow-lg overflow-hidden w-full max-w-5xl relative">
+  <div
+    class="bg-white rounded-xl shadow border border-gray-200 w-full max-w-5xl overflow-hidden transition hover:shadow-md">
     <!-- Venue Image -->
-    <img class="w-full aspect-video object-cover" :src="image_link" alt="Event Image" />
+    <img :src="image_link" alt="Venue Image" class="w-full h-48 object-cover" />
 
     <!-- Venue Info -->
-    <div class="p-3">
-      <h2 class="text-lg font-bold">{{ name }}</h2>
-      <div class="mt-2 flex flex-col gap-1">
-        <p class="flex items-center gap-2">
-          <IconLocation class="w-5 h-5 text-white" />
-          {{ location }}
-        </p>
-      </div>
+    <div class="p-4 space-y-3">
+      <!-- Title -->
+      <h2 class="text-xl font-semibold text-gray-900 truncate">{{ name }}</h2>
+
+      <!-- Location -->
+      <p class="flex items-center gap-2 text-sm text-gray-600">
+        <IconLocation class="w-5 h-5 text-gray-400" />
+        <span class="truncate">{{ location }}</span>
+      </p>
 
       <!-- Actions -->
-      <div class="flex justify-between gap-5">
+      <div class="flex justify-end gap-3 pt-2">
         <RouterLink :to="{ name: 'venuesUpdate', params: { id: id } }"
-          class="mt-4 bg-lime-500 px-4 py-2 rounded-lg hover:bg-lime-700 flex items-center justify-center">
-          Update
+          class="text-sm px-4 py-2 bg-green-100 text-green-700 rounded-md hover:bg-green-200 transition">
+          Edit
         </RouterLink>
-
         <button @click="showConfirmModal = true"
-          class="mt-4 bg-red-500 px-4 py-2 rounded-lg hover:bg-red-700 flex items-center justify-center">
+          class="text-sm px-4 py-2 bg-red-100 text-red-600 rounded-md hover:bg-red-200 transition">
           Delete
         </button>
       </div>
@@ -29,17 +30,18 @@
 
     <!-- Modal Confirmation -->
     <div v-if="showConfirmModal"
-      class="fixed inset-0 bg-white/15 backdrop-blur-lg flex items-center justify-center z-50">
-      <div class="bg-white text-black rounded-xl p-6 w-full max-w-md shadow-xl">
-        <h2 class="text-xl font-bold mb-4">Are you sure?</h2>
-        <p class="mb-6">Do you really want to delete this venue? This action cannot be undone.</p>
+      class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
+      <div class="bg-white text-gray-800 rounded-xl p-6 w-full max-w-sm shadow-xl">
+        <h2 class="text-lg font-semibold mb-2">Hapus Venue?</h2>
+        <p class="text-sm text-gray-600 mb-6">Apakah Anda yakin ingin menghapus venue ini? Tindakan ini tidak bisa
+          dibatalkan.</p>
         <div class="flex justify-end gap-3">
           <button @click="showConfirmModal = false"
-            class="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100">
-            Cancel
+            class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 text-sm">
+            Batal
           </button>
-          <button @click="deleteItem" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-800">
-            Yes, Delete
+          <button @click="deleteItem" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm">
+            Ya, Hapus
           </button>
         </div>
       </div>
@@ -66,7 +68,7 @@ export default {
       image_link: this.image
         ? `http://127.0.0.1:8000${this.image}`
         : "/src/assets/noImage.png",
-      showConfirmModal: false, // kontrol modal
+      showConfirmModal: false,
     };
   },
   methods: {
@@ -75,18 +77,14 @@ export default {
       formData.append("_method", "delete");
 
       axios
-        .post(
-          `http://localhost:8000/api/venues/delete/${this.id}`,
-          formData,
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        )
+        .post(`http://localhost:8000/api/venues/delete/${this.id}`, formData, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then(() => {
-          this.$emit("deleted", this.id); // kirim sinyal ke parent
+          this.$emit("deleted", this.id);
           this.showConfirmModal = false;
         })
         .catch((err) => {

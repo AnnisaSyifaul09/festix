@@ -1,58 +1,68 @@
 <template>
-  <div class="bg-indigo-900 text-white rounded-xl shadow-lg overflow-hidden w-full ">
-    <img class="w-full aspect-video object-cover" :src="image_link" alt="Event Image" />
-    <div class="p-3">
-      <h2 class="text-lg font-bold">{{ title }}</h2>
-      <div class="mt-2 flex flex-col gap-1">
-        <p class="flex items-center gap-2">
-          <IconDate class="w-5 h-5 text-white" />
-          {{ date }}
-        </p>
-        <p class="flex items-center gap-2">
-          <IconTime class="w-5 h-5 text-white" />
-          {{ timeOnly }}
-        </p>
-        <p class="flex items-center gap-2">
-          <IconLocation class="w-5 h-5 text-white" />
-          {{ location }}
-        </p>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden w-full transition hover:shadow-md">
+    <!-- Image -->
+    <div class="relative">
+      <img class="w-full h-48 object-cover" :src="image_link" alt="Event Image" />
+      <div class="absolute bottom-0 left-0 bg-black/50 text-white text-xs px-2 py-1 rounded-tr-xl">
+        {{ date }}
       </div>
-      <div class="flex justify-between gap-3">
+    </div>
+
+    <!-- Content -->
+    <div class="p-4 space-y-2">
+      <!-- Title -->
+      <h2 class="text-lg font-bold text-gray-900 truncate">{{ title }}</h2>
+
+      <!-- Metadata -->
+      <div class="text-xs text-gray-500 space-y-1">
+        <div class="flex items-center gap-2">
+          <IconTime class="w-4 h-4 text-gray-400" />
+          <span>{{ timeOnly }}</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <IconLocation class="w-4 h-4 text-gray-400" />
+          <span class="truncate">{{ location }}</span>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex justify-between gap-2 pt-3">
         <RouterLink :to="{ name: 'eventShow', params: { id: id } }"
-          class="mt-4 bg-indigo-500 px-4 py-2 rounded-lg  hover:bg-indigo-700 flex items-center justify-center">
+          class="flex-1 text-center text-xs py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition">
           Detail
         </RouterLink>
         <RouterLink :to="{ name: 'eventUpdate', params: { id: id } }"
-          class="mt-4 bg-lime-500 px-4 py-2 rounded-lg  hover:bg-lime-700 flex items-center justify-center">
-          Update
+          class="flex-1 text-center text-xs py-1.5 bg-green-100 text-green-700 rounded-md hover:bg-green-200 transition">
+          Edit
         </RouterLink>
-        <button @click="$emit('confirm-delete', id)"
-          class="mt-4 bg-red-500 px-4 py-2 rounded-lg hover:bg-red-700 flex items-center justify-center">
-          Delete
+        <button @click="showConfirmModal = true"
+          class="flex-1 text-center text-xs py-1.5 bg-red-100 text-red-600 rounded-md hover:bg-red-200 transition">
+          Hapus
         </button>
-
       </div>
-
     </div>
 
+    <!-- Modal -->
     <div v-if="showConfirmModal"
-      class="fixed inset-0 bg-white/15 backdrop-blur-lg flex items-center justify-center z-50">
-      <div class="bg-white text-black rounded-xl p-6 w-full max-w-md shadow-xl">
-        <h2 class="text-xl font-bold mb-4">Are you sure?</h2>
-        <p class="mb-6">Do you really want to delete this venue? This action cannot be undone.</p>
-        <div class="flex justify-end gap-3">
+      class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
+      <div class="bg-white p-6 rounded-xl shadow-lg w-full max-w-sm">
+        <h3 class="text-base font-semibold mb-3 text-gray-900">Hapus Event?</h3>
+        <p class="text-sm text-gray-600 mb-4">Apakah kamu yakin ingin menghapus event ini? Tindakan ini tidak bisa
+          dibatalkan.</p>
+        <div class="flex justify-end gap-2">
           <button @click="showConfirmModal = false"
-            class="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100">
-            Cancel
+            class="text-sm px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">
+            Batal
           </button>
-          <button @click="deleteItem" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-800">
-            Yes, Delete
+          <button @click="deleteItem" class="text-sm px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+            Ya, Hapus
           </button>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 
 
 <script>
