@@ -34,6 +34,7 @@
 <script>
 import axios from 'axios'
 import NavbarAdmin from '@/components/NavbarAdmin.vue'
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default {
     components: {
@@ -66,7 +67,7 @@ export default {
                         'Authorization': 'Bearer ' + token,
                     },
                 };
-                const response = await axios.put(`http://localhost:8000/api/admin/users/`, formData, config);
+                const response = await axios.put(`${API_URL}/admin/users/`, formData, config);
 
                 this.status = response.data.status
                 this.message = 'Password updated successfully'

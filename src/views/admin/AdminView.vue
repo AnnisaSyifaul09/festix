@@ -39,7 +39,7 @@
 <script>
 import NavbarAdmin from "@/components/NavbarAdmin.vue";
 import axios from "axios";
-
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default {
   components: {
@@ -83,7 +83,7 @@ export default {
     },
     getItem() {
       axios
-        .get("http://localhost:8000/api/admin/dashboard/ongoing", {
+        .get(`${API_URL}/admin/dashboard/ongoing`, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
@@ -98,7 +98,7 @@ export default {
 
 
       axios
-        .get("http://localhost:8000/api/admin/dashboard/users", {
+        .get(`${API_URL}/admin/dashboard/users`, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
@@ -112,7 +112,7 @@ export default {
         });
 
       axios
-        .get("http://localhost:8000/api/admin/dashboard/revenue", {
+        .get(`${API_URL}/admin/dashboard/revenue`, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },

@@ -46,7 +46,7 @@
 <script>
 import axios from 'axios';
 import NavbarAdmin from '@/components/NavbarAdmin.vue';
-
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default {
     components: {
@@ -83,7 +83,7 @@ export default {
             };
 
             try {
-                const response = await axios.post('http://localhost:8000/api/venues/create', formData, config);
+                const response = await axios.post(`${API_URL}/venues/create`, formData, config);
                 alert('Form submitted successfully!');
                 this.errors = {};
                 // Reset form if needed

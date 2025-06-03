@@ -48,6 +48,7 @@
 import axios from "axios";
 import router from '@/router';
 import { useUserStore } from '@/stores/userStore';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default {
     data() {
@@ -61,7 +62,7 @@ export default {
     methods: {
         login() {
             this.isLoading = true;
-            axios.post('http://127.0.0.1:8000/api/auth/login-admin', {
+            axios.post(`${API_URL}/auth/login-admin`, {
                 email: this.email,
                 password: this.password
             }).then((response) => {
@@ -69,7 +70,7 @@ export default {
 
                 if (response.data.data.email_verified_at === null) {
                     const userStore = useUserStore();
-                    axios.post('http://127.0.0.1:8000/api/auth/get-token', { email: this.email })
+                    axios.post(`${API_URL}/auth/get-token`, { email: this.email })
                         .then((res) => {
                             userStore.setUserData(res.data.data);
                             router.push({ name: 'verif' });

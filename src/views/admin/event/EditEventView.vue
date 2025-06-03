@@ -69,6 +69,7 @@
 <script>
 import NavbarAdmin from "@/components/NavbarAdmin.vue";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default {
     components: {
@@ -136,7 +137,7 @@ export default {
                 formData.append('_method', 'patch');
                 formData.append('name', this.form.name);
                 formData.append('date', this.form.date);
-                formData.append('time', this.form.time);
+                formData.append('time', this.form.time.split("T")[1].slice(0, 5));
                 formData.append('description', this.form.description);
                 formData.append('venue_id', this.form.venue_id);
 
@@ -161,7 +162,7 @@ export default {
                     },
                 };
 
-                await axios.post(`http://localhost:8000/api/events/update/${this.eventId}`, formData, config);
+                await axios.post(`${API_URL}/events/update/${this.eventId}`, formData, config);
                 alert('Form submitted successfully');
             } catch (error) {
                 console.error(error);
@@ -170,7 +171,7 @@ export default {
         },
         async getVenues() {
             try {
-                const res = await axios.get('http://localhost:8000/api/venues', {
+                const res = await axios.get(`${API_URL}/venues`, {
                     headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
                 });
                 this.venues = res.data?.data || [];
@@ -180,7 +181,7 @@ export default {
         },
         async getSeatCategories() {
             try {
-                const res = await axios.get('http://localhost:8000/api/seat-categories', {
+                const res = await axios.get(`${API_URL}/seat-categories`, {
                     headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
                 });
                 this.seatCategories = res.data?.data || [];
@@ -190,7 +191,7 @@ export default {
         },
         async getItem() {
             try {
-                const res = await axios.get(`http://localhost:8000/api/events/${this.eventId}`, {
+                const res = await axios.get(`${API_URL}/events/${this.eventId}`, {
                     headers: {
                         Authorization: "Bearer " + localStorage.getItem("token"),
                     },
@@ -200,7 +201,7 @@ export default {
                 const seatsFromBackend = res.data.data.event_price;
 
                 this.form.name = event.name;
-                this.form.time = event.time;
+                this.form.time = event.date + 'T' + event.time; // Format waktu sesuai input type datetime-local
                 this.form.description = event.description;
                 this.form.venue_id = event.venue_id;
 

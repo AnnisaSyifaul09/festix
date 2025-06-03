@@ -21,8 +21,8 @@
             <TicketCard v-for="(ticket, index) in paginatedData" :key="index"
               :image="Array.isArray(ticket.event_price.event.event_image) && ticket.event_price.event.event_image.length > 0 ? ticket.event_price.event.event_image[0].link : ''"
               :title="ticket.event_price.event.name" :date="ticket.event_price.event.date"
-              :time="ticket.event_price.event.time.split(' ')[1].slice(0, 5)"
-              :location="ticket.event_price.event.location" :id="ticket.id" :status="ticket.status" />
+              :time="ticket.event_price.event.time" :location="ticket.event_price.event.location" :id="ticket.id"
+              :status="ticket.status" />
           </div>
 
           <!-- Pagination Controls -->
@@ -58,6 +58,9 @@ import ProfileCard from "@/components/ProfileCard.vue";
 import TicketCard from "@/components/TicketCard.vue";
 import axios from "axios";
 import router from "@/router";
+
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 export default {
   components: {
@@ -95,7 +98,7 @@ export default {
   methods: {
     getItem() {
       // Fetch user profile
-      axios.get(`http://localhost:8000/api/auth/me`, {
+      axios.get(`${API_URL}/auth/me`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -110,7 +113,7 @@ export default {
       });
 
       // Fetch ticket history
-      axios.get(`http://localhost:8000/api/history-tickets`, {
+      axios.get(`${API_URL}/history-tickets`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },

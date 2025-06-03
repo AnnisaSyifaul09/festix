@@ -14,7 +14,7 @@
                     <select v-model="selectedEventId" class="px-4 py-2 w-full shadow rounded-lg">
                         <option value="">All</option>
                         <option v-for="(event, index) in data" :key="index" :value="event.id">
-                            {{ `${event.name} | ${event.date} | ${event.time.split(' ')[1].slice(0, 5)}` }}
+                            {{ `${event.name} | ${event.date} | ${event.time}` }}
                         </option>
                     </select>
                 </div>
@@ -42,6 +42,7 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import { Html5Qrcode } from 'html5-qrcode';
 import NavbarAdmin from "@/components/NavbarAdmin.vue";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default {
     components: {
@@ -70,7 +71,7 @@ export default {
                 return;
             }
 
-            axios.post("http://localhost:8000/api/verify-ticket", {
+            axios.post(`${API_URL}/verify-ticket`, {
                 code: this.code,
                 event_id: this.selectedEventId,
             }, {
@@ -89,7 +90,7 @@ export default {
                 });
         },
         getItem() {
-            axios.get(`http://localhost:8000/api/events`, {
+            axios.get(`${API_URL}/events`, {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("token"),
                 },
@@ -128,7 +129,7 @@ export default {
             (decodedText) => {
                 this.code = decodedText;
 
-                axios.post("http://localhost:8000/api/verify-ticket", {
+                axios.post(`${API_URL}/verify-ticket`, {
                     code: this.code,
                     event_id: this.selectedEventId,
                 }, {

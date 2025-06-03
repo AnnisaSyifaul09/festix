@@ -65,6 +65,7 @@
 import NavbarAdmin from "@/components/NavbarAdmin.vue";
 
 import axios from 'axios';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default {
     components: {
@@ -127,7 +128,7 @@ export default {
                 const formData = new FormData();
                 formData.append('name', this.form.name);
                 formData.append('date', this.form.date); // Using the date derived from time
-                formData.append('time', this.form.time);
+                formData.append('time', this.form.time.split("T")[1].slice(0, 5));
                 formData.append('description', this.form.description);
                 formData.append('venue_id', this.form.venue_id);
 
@@ -147,7 +148,10 @@ export default {
                 });
 
                 // Log the formData before sending it for debugging purposes
-                console.log('Form Data:', formData);
+                for (let pair of formData.entries()) {
+                    console.log(`${pair[0]}:`, pair[1]);
+                }
+
 
                 const token = localStorage.getItem('token');
                 const config = {
@@ -157,75 +161,75 @@ export default {
                     }
                 };
 
-                await axios.post('http://localhost:8000/api/events/create', formData, config);
+                await axios.post(`${API_URL}/events/create`, formData, config);
                 alert('Form submitted successfully');
             } catch (error) {
                 console.error(error);
                 alert('Error submitting form');
             }
         },
-        async submitForm() {
-            // Validate if seats are added
-            if (this.form.seats.length === 0) {
-                alert('Please add at least one seat.');
-                return;
-            }
+        // async submitForm() {
+        //     // Validate if seats are added
+        //     if (this.form.seats.length === 0) {
+        //         alert('Please add at least one seat.');
+        //         return;
+        //     }
 
-            // Validate if each seat is filled properly
-            for (let seat of this.form.seats) {
-                if (!seat.price || !seat.total_seat || !seat.category_seat) {
-                    alert('Please fill in all seat details.');
-                    return;
-                }
-            }
+        //     // Validate if each seat is filled properly
+        //     for (let seat of this.form.seats) {
+        //         if (!seat.price || !seat.total_seat || !seat.category_seat) {
+        //             alert('Please fill in all seat details.');
+        //             return;
+        //         }
+        //     }
 
-            try {
-                // Set date field to be the same as time field
-                this.form.date = this.form.time.split('T')[0];  // Take only the date part from datetime-local
+        //     try {
+        //         // Set date field to be the same as time field
+        //         this.form.date = this.form.time.split('T')[0];  // Take only the date part from datetime-local
 
-                const formData = new FormData();
-                formData.append('name', this.form.name);
-                formData.append('date', this.form.date); // Using the date derived from time
-                formData.append('time', this.form.time);
-                formData.append('description', this.form.description);
-                formData.append('venue_id', this.form.venue_id);
+        //         const formData = new FormData();
+        //         formData.append('name', this.form.name);
+        //         formData.append('date', this.form.date); // Using the date derived from time
+        //         formData.append('time', this.form.time);
+        //         formData.append('description', this.form.description);
+        //         formData.append('venue_id', this.form.venue_id);
 
-                // Handle file uploads
-                if (this.coverImage) {
-                    formData.append('cover_image', this.coverImage);
-                }
-                if (this.seatMapImage) {
-                    formData.append('seat_map', this.seatMapImage);
-                }
+        //         // Handle file uploads
+        //         if (this.coverImage) {
+        //             formData.append('cover_image', this.coverImage);
+        //         }
+        //         if (this.seatMapImage) {
+        //             formData.append('seat_map', this.seatMapImage);
+        //         }
 
-                // Append seats as individual fields (instead of JSON string)
-                this.form.seats.forEach((seat, index) => {
-                    formData.append(`seats[${index}][price]`, seat.price);
-                    formData.append(`seats[${index}][total_seat]`, seat.total_seat);
-                    formData.append(`seats[${index}][category_seat]`, seat.category_seat);
-                });
+        //         // Append seats as individual fields (instead of JSON string)
+        //         this.form.seats.forEach((seat, index) => {
+        //             formData.append(`seats[${index}][price]`, seat.price);
+        //             formData.append(`seats[${index}][total_seat]`, seat.total_seat);
+        //             formData.append(`seats[${index}][category_seat]`, seat.category_seat);
+        //         });
 
-                // Log the formData before sending it for debugging purposes
-                console.log('Form Data:', formData);
+        //         // Log the formData before sending it for debugging purposes
+        //         console.log('Form Data:', formData);
 
-                const token = localStorage.getItem('token');
-                const config = {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        'Authorization': 'Bearer ' + token
-                    }
-                };
+        //         const token = localStorage.getItem('token');
+        //         const config = {
+        //             headers: {
+        //                 'Content-Type': 'multipart/form-data',
+        //                 'Authorization': 'Bearer ' + token
+        //             }
+        //         };
 
-                await axios.post('http://localhost:8000/api/events/create', formData, config);
-                alert('Form submitted successfully');
-            } catch (error) {
-                console.error(error);
-                alert('Error submitting form');
-            }
-        },
+        //         await axios.post(`${API_URL}/events/create`, formData, config);
+        //         alert('Form submitted successfully');
+        //     } catch (error) {
+        //         console.error(error);
+        //         alert('Error submitting form');
+        //     }
+        // },
         async getVenues() {
             try {
-                const response = await axios.get('http://localhost:8000/api/venues', {
+                const response = await axios.get(`${API_URL}/venues`, {
                     headers: { Authorization: 'Bearer ' + localStorage.getItem('token') }
                 });
                 if (response.data?.data) {
@@ -238,7 +242,7 @@ export default {
         },
         async getSeatCategories() {
             try {
-                const response = await axios.get('http://localhost:8000/api/seat-categories', {
+                const response = await axios.get(`${API_URL}/seat-categories`, {
                     headers: { Authorization: 'Bearer ' + localStorage.getItem('token') }
                 });
                 if (response.data?.data) {

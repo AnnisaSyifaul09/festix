@@ -85,7 +85,7 @@ export default {
       return this.date.split('-')[0];
     },
     timeOnly() {
-      return this.time.split(" ")[1].slice(0, 5); // Ambil bagian jam dan menit
+      return this.time; // Ambil bagian jam dan menit
     },
   },
   components: {

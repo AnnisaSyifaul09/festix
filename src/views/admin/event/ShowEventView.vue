@@ -17,7 +17,7 @@
                         </p>
                         <p class="flex items-center gap-2">
                             <IconTime class="w-5 h-5 text-indigo-900" />
-                            {{ event.time?.split(" ")[1].slice(0, 5) }}
+                            {{ event.time }}
                         </p>
 
                     </div>
@@ -89,6 +89,7 @@ import IconTime from "@/components/icons/IconTime.vue";
 import IconLocation from "@/components/icons/IconLocation.vue";
 import axios from "axios";
 import router from "@/router";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default {
     components: {
@@ -152,7 +153,7 @@ export default {
             }).format(value);
         },
         getItem() {
-            axios.get(`http://localhost:8000/api/events/${this.eventId}`, {
+            axios.get(`${API_URL}/events/${this.eventId}`, {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("token"),
                 },

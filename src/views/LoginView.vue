@@ -56,6 +56,8 @@ import axios from "axios";
 import router from '@/router';
 import { useUserStore } from '@/stores/userStore';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 export default {
     data() {
@@ -72,7 +74,7 @@ export default {
             this.isLoading = true; // Mulai loading
 
             axios
-                .post('http://127.0.0.1:8000/api/auth/login', {
+                .post(`${API_URL}/auth/login`, {
                     email: this.email,
                     password: this.password
                 })
@@ -85,7 +87,7 @@ export default {
                         const userStore = useUserStore();
                         console.log(this.email);
                         axios
-                            .post('http://127.0.0.1:8000/api/auth/get-token', {
+                            .post(`${API_URL}/auth/get-token`, {
                                 email: this.email,
                             })
                             .then((response) => {

@@ -77,6 +77,7 @@
 import NavbarAdmin from "@/components/NavbarAdmin.vue";
 import { RouterLink } from "vue-router";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default {
     components: {
@@ -104,7 +105,7 @@ export default {
         async getRoles() {
             try {
                 const token = localStorage.getItem("token");
-                const res = await axios.get("http://localhost:8000/api/admin/roles", {
+                const res = await axios.get(`${API_URL}/admin/roles`, {
                     headers: {
                         Authorization: "Bearer " + token,
                     },
@@ -136,7 +137,7 @@ export default {
                 formData.append("password", this.formData.password);
                 formData.append("role_id", this.formData.role);
 
-                await axios.post("http://localhost:8000/api/admin/users/create", formData, {
+                await axios.post(`${API_URL}/admin/users/create`, formData, {
                     headers: {
                         Authorization: "Bearer " + token,
                     },

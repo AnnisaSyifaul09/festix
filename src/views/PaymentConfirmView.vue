@@ -72,6 +72,8 @@ import IconLocation from "@/components/icons/IconLocation.vue";
 import axios from "axios";
 import { inject } from 'vue';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 export default {
     components: {
@@ -123,7 +125,7 @@ export default {
             formData.append("quantity", this.quantity);
             formData.append("price", this.price);
 
-            axios.post(`http://localhost:8000/api/payment`, formData, {
+            axios.post(`${API_URL}/payment`, formData, {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("token"),
                 },

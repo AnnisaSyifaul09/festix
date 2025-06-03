@@ -69,7 +69,7 @@
 import IconDate from "@/components/icons/IconDate.vue";
 import IconTime from "@/components/icons/IconTime.vue";
 import IconLocation from "@/components/icons/IconLocation.vue";
-
+import axios from "axios";
 export default {
   props: {
     id: String,
@@ -100,7 +100,8 @@ export default {
       return this.date.split("-")[0]; // Ambil bagian tahun
     },
     timeOnly() {
-      return this.time.split(" ")[1].slice(0, 5); // Ambil bagian jam dan menit
+      // return this.time.split(" ")[1].slice(0, 5); // Ambil bagian jam dan menit
+      return this.time; // Ambil bagian jam dan menit
     },
   },
   methods: {

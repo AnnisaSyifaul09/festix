@@ -15,7 +15,7 @@ import axios from "axios";
 import router from "@/router";
 import ProfileCardAdmin from "@/components/ProfileCardAdmin.vue";
 import NavbarAdmin from "@/components/NavbarAdmin.vue";
-
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default {
     components: {
@@ -41,7 +41,7 @@ export default {
     methods: {
         getItem() {
             // Fetch user profile
-            axios.get(`http://localhost:8000/api/auth/me`, {
+            axios.get(`${API_URL}/auth/me`, {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("token"),
                 },

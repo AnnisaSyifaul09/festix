@@ -81,6 +81,9 @@ import axios from "axios";
 import router from '@/router';
 import { useUserStore } from '@/stores/userStore';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
+
 export default {
     data() {
         return {
@@ -98,7 +101,7 @@ export default {
             this.isLoading = true; // ⏳ Start loading
 
             axios
-                .post('http://127.0.0.1:8000/api/auth/register', {
+                .post(`${API_URL}/auth/register`, {
                     email: this.email,
                     password: this.password,
                     name: this.name,

@@ -96,6 +96,7 @@ import NavbarAdmin from "@/components/NavbarAdmin.vue";
 import ManageEventCard from "@/components/ManageEventCard.vue";
 import axios from "axios";
 import router from "@/router";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default {
   components: {
@@ -143,7 +144,7 @@ export default {
   methods: {
     getItem() {
       this.isLoading = true;
-      axios.get(`http://localhost:8000/api/events`, {
+      axios.get(`${API_URL}/events`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -196,7 +197,7 @@ export default {
       const formData = new FormData();
       formData.append("_method", "delete");
 
-      axios.post(`http://localhost:8000/api/events/delete/${id}`, formData, {
+      axios.post(`${API_URL}/events/delete/${id}`, formData, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
           "Content-Type": "multipart/form-data",

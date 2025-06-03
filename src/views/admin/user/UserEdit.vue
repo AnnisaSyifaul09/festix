@@ -68,6 +68,7 @@
 import NavbarAdmin from "@/components/NavbarAdmin.vue";
 import { RouterLink } from 'vue-router';
 import axios from 'axios';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default {
   components: {
@@ -92,7 +93,7 @@ export default {
   methods: {
     async fetchRoles() {
       try {
-        const response = await axios.get('http://localhost:8000/api/roles', {
+        const response = await axios.get(`${API_URL}/roles`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
           }
@@ -104,7 +105,7 @@ export default {
     },
     async fetchUser() {
       try {
-        const response = await axios.get(`http://localhost:8000/api/users/${this.$route.params.id}`, {
+        const response = await axios.get(`${API_URL}/users/${this.$route.params.id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
           }
@@ -127,13 +128,13 @@ export default {
         if (!updateData.password) {
           delete updateData.password;
         }
-        
-        await axios.put(`http://localhost:8000/api/users/${this.$route.params.id}`, updateData, {
+
+        await axios.put(`${API_URL}/users/${this.$route.params.id}`, updateData, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
           }
         });
-        
+
         this.$router.push({ name: 'user' });
       } catch (error) {
         console.error('Error updating user:', error);

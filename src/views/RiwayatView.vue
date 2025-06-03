@@ -24,9 +24,8 @@
             <TicketCard v-for="(ticket, index) in paginatedData" :key="index"
               :image="Array.isArray(ticket.event_price.event.event_image) && ticket.event_price.event.event_image.length > 0 ? ticket.event_price.event.event_image[0].link : ''"
               :title="ticket.event_price.event.name" :date="ticket.event_price.event.date"
-              :time="ticket.event_price.event.time.split(' ')[1].slice(0, 5)"
-              :location="ticket.event_price.event.vanue?.name || 'Unknown Venue'" :id="ticket.id"
-              :status="ticket.status" />
+              :time="ticket.event_price.event.time" :location="ticket.event_price.event.vanue?.name || 'Unknown Venue'"
+              :id="ticket.id" :status="ticket.status" />
           </div>
 
           <!-- Pagination -->
@@ -65,6 +64,9 @@ import IconLocation from "@/components/icons/IconLocation.vue";
 import axios from "axios";
 import router from "@/router";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
+
 export default {
   components: {
     NavbarItem,
@@ -102,7 +104,7 @@ export default {
   },
   methods: {
     getItem() {
-      axios.get(`http://localhost:8000/api/history-tickets`, {
+      axios.get(`${API_URL}/history-tickets`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },

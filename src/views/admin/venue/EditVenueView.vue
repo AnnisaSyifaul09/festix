@@ -46,7 +46,7 @@
 <script>
 import axios from 'axios';
 import NavbarAdmin from '@/components/NavbarAdmin.vue';
-
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default {
     components: {
@@ -74,7 +74,7 @@ export default {
         },
         async getItem() {
             try {
-                const res = await axios.get(`http://localhost:8000/api/venues/${this.venueId}`, {
+                const res = await axios.get(`${API_URL}/venues/${this.venueId}`, {
                     headers: {
                         Authorization: "Bearer " + localStorage.getItem("token"),
                     },
@@ -115,7 +115,7 @@ export default {
             };
 
             try {
-                const response = await axios.post(`http://localhost:8000/api/venues/update/${this.venueId}`, formData, config);
+                const response = await axios.post(`${API_URL}/venues/update/${this.venueId}`, formData, config);
                 alert('Form submitted successfully!');
                 this.errors = {};
                 // Reset form if needed

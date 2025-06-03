@@ -36,6 +36,7 @@ import NavbarAdmin from "@/components/NavbarAdmin.vue";
 import ManageUserTable from "@/components/ManageUserTable.vue";
 import { RouterLink } from 'vue-router';
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default {
   components: {
@@ -88,7 +89,7 @@ export default {
     async getItem() {
       this.isLoading = true;
       try {
-        const res = await axios.get(`http://localhost:8000/api/admin/users`, {
+        const res = await axios.get(`${API_URL}/admin/users`, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },

@@ -55,6 +55,9 @@
 import axios from "axios";
 import router from '@/router';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
+
 export default {
     data() {
         return {
@@ -70,7 +73,7 @@ export default {
     methods: {
         // Kirim OTP ke email
         requestOtp() {
-            axios.post('http://127.0.0.1:8000/api/auth/reset-password', { email: this.email })
+            axios.post(`${API_URL}/auth/reset-password`, { email: this.email })
                 .then((response) => {
                     console.log(response);
                     this.userId = response.data.data.id; // Simpan ID user
@@ -83,7 +86,7 @@ export default {
 
         // Verifikasi OTP yang dimasukkan
         verifyOtp() {
-            axios.post(`http://127.0.0.1:8000/api/auth/${this.userId}/otp-validation`, {
+            axios.post(`${API_URL}/auth/${this.userId}/otp-validation`, {
                 email: this.email,
                 otp_code: this.otp,
             })
@@ -104,7 +107,7 @@ export default {
                 return;
             }
 
-            axios.post(`http://127.0.0.1:8000/api/auth/reset-password/new`, {
+            axios.post(`${API_URL}/auth/reset-password/new`, {
                 userId: this.userId,
                 password: this.newPassword
             })

@@ -293,9 +293,9 @@ router.beforeEach((to, from, next) => {
       return next("/login");
     }
 
-    if (to.meta.role && role_id === userRole) {
-      return next("/home");
-    }
+    // if (to.meta.role && role_id === userRole) {
+    //   return next("/home");
+    // }
 
     // Jika ada aturan role dan role user tidak sesuai
     if (to.meta.role && (!role_id || !to.meta.role.includes(role_id))) {

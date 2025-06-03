@@ -151,6 +151,7 @@ import NavbarAdmin from "@/components/NavbarAdmin.vue";
 import ManageUserTable from "@/components/ManageUserTable.vue";
 import { RouterLink } from 'vue-router';
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default {
     components: {
@@ -215,9 +216,9 @@ export default {
             };
             try {
                 if (this.action === 'confirm') {
-                    await axios.post(`http://localhost:8000/api/admin/payments/manual/confirm`, { paymentId: this.paymentId }, config);
+                    await axios.post(`${API_URL}/admin/payments/manual/confirm`, { paymentId: this.paymentId }, config);
                 } else if (this.action === 'deny') {
-                    await axios.post(`http://localhost:8000/api/admin/payments/manual/deny`, { paymentId: this.paymentId }, config);
+                    await axios.post(`${API_URL}/admin/payments/manual/deny`, { paymentId: this.paymentId }, config);
                 }
                 this.closeConfirmModal();
                 this.getItem(); // Refresh data after action
@@ -229,7 +230,7 @@ export default {
         async getItem() {
             this.isLoading = true;
             try {
-                const res = await axios.get(`http://localhost:8000/api/admin/payments`, {
+                const res = await axios.get(`${API_URL}/admin/payments`, {
                     headers: {
                         Authorization: "Bearer " + localStorage.getItem("token"),
                     },

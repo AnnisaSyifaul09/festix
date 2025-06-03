@@ -89,6 +89,9 @@ import IconTime from '@/components/icons/IconTime.vue';
 import NavbarItem from '@/components/NavbarItem.vue';
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
+
 export default {
   components: {
     NavbarItem, IconTime, IconLocation
@@ -140,7 +143,7 @@ export default {
     },
     getItem() {
       this.isLoading = true;
-      axios.get(`http://localhost:8000/api/events`, {
+      axios.get(`${API_URL}/events`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -165,7 +168,7 @@ export default {
       return date.split("-")[0];
     },
     timeOnly(time) {
-      return time.split(" ")[1].slice(0, 5);
+      return time;
     },
     getMonthName(date) {
       const dateObj = new Date(date);

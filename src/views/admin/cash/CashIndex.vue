@@ -122,6 +122,7 @@ import RevenueGraph from "@/components/RevenueGraph.vue";
 import TransactionTable from "@/components/TransactionTable.vue";
 import CashEventCard from "@/components/CashEventCard.vue";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default {
   components: {
@@ -182,7 +183,7 @@ export default {
     },
     getItem() {
       this.isLoading = true;
-      axios.get(`http://localhost:8000/api/cash/global/index`, {
+      axios.get(`${API_URL}/cash/global/index`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },

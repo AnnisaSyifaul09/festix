@@ -14,7 +14,7 @@
                         <CardPembayaranVue v-for="(ticket, index) in paginatedData" :key="index" :image="Array.isArray(ticket.event_price.event.event_image) && ticket.event_price.event.event_image.length > 0
                             ? ticket.event_price.event.event_image[0].link
                             : ''" :title="ticket.event_price.event.name" :date="ticket.event_price.event.date"
-                            :time="ticket.event_price.event.time.split(' ')[1].slice(0, 5)"
+                            :time="ticket.event_price.event.time"
                             :location="ticket.event_price.event.vanue?.name || 'Unknown Venue'" :id="ticket.id"
                             :status="ticket.status" :snapToken="ticket.snap_token" @pay="handlePay" />
                     </div>
@@ -51,6 +51,9 @@ import NavbarItem from "@/components/NavbarItem.vue";
 import CardPembayaranVue from '@/components/CardPembayaran.vue';
 import axios from "axios";
 import router from "@/router";
+
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 export default {
     components: {
@@ -93,7 +96,7 @@ export default {
     methods: {
         getItem() {
             this.loading = true;
-            axios.get(`http://localhost:8000/api/payments`, {
+            axios.get(`${API_URL}/payments`, {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("token"),
                 },
@@ -140,7 +143,7 @@ export default {
                     formData.append("status", "success");
                     formData.append("paymentId", payment.id);
 
-                    axios.post(`http://localhost:8000/api/payments/create/success`, formData, {
+                    axios.post(`${API_URL}/payments/create/success`, formData, {
                         headers: { Authorization: "Bearer " + token },
                     }).then(() => {
                         router.push({ name: "riwayat" });

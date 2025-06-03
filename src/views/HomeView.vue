@@ -51,6 +51,8 @@ import VenueCard from "@/components/VenueCard.vue";
 import axios from "axios";
 import router from '@/router';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 export default {
   components: {
@@ -78,7 +80,7 @@ export default {
   methods: {
     getItem() {
       this.isLoading = true;
-      axios.get(`http://localhost:8000/api/venues`, {
+      axios.get(`${API_URL}/venues`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -99,7 +101,7 @@ export default {
         }
       });
 
-      axios.get(`http://localhost:8000/api/events`, {
+      axios.get(`${API_URL}/events`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },

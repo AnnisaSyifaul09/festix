@@ -53,6 +53,9 @@ import axios from "axios";
 import router from '@/router';
 import { useUserStore } from '@/stores/userStore';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
+
 export default {
     data() {
         return {
@@ -69,7 +72,7 @@ export default {
             this.errorMessage = ''; // clear previous errors
 
             axios
-                .post(`http://127.0.0.1:8000/api/auth/${userStore.id}/otp-validation`, {
+                .post(`${API_URL}/auth/${userStore.id}/otp-validation`, {
                     otp_code: this.token,
                 })
                 .then(() => {
@@ -87,7 +90,7 @@ export default {
             this.isGettingToken = true;
 
             axios
-                .post(`http://127.0.0.1:8000/api/auth/get-token`, {
+                .post(`${API_URL}/auth/get-token`, {
                     email: userStore.email,
                 })
                 .then(() => {
