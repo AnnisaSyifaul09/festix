@@ -37,11 +37,14 @@ import IconTime from "@/components/icons/IconTime.vue";
 import IconLocation from "@/components/icons/IconLocation.vue";
 import QrCode from "@/components/QrCode.vue";
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+
 export default {
   data() {
     return {
       image_link: this.image
-        ? `http://127.0.0.1:8000${this.image}`
+        ? `${BASE_URL}${this.image}`
         : "/src/assets/noImage.png",
     };
   },

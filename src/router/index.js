@@ -29,6 +29,7 @@ import UpdateAdminProfileView from "@/views/admin/profile/UpdateAdminProfileView
 import RiwayatPembayaranView from "@/views/RiwayatPembayaranView.vue";
 import IndexPaymentView from "@/views/admin/payment/IndexPaymentView.vue";
 import AdminLoginView from "@/views/admin/login/AdminLoginView.vue";
+import SeatEditView from "@/views/admin/seat/SeatEditView.vue";
 
 const userRole = import.meta.env.VITE_USER_ROLE;
 const adminRole = import.meta.env.VITE_ADMIN_ROLE;
@@ -278,6 +279,33 @@ const router = createRouter({
       path: "/admin/login",
       name: "adminLogin",
       component: AdminLoginView,
+    },
+    {
+      path: "/admin/seatcategory",
+      name: "adminSeatCategory",
+      component: () => import("@/views/admin/seat/SeatIndexView.vue"),
+      meta: {
+        requiresAuth: true,
+        role: [adminRole, managerRole, superAdminRole],
+      },
+    },
+    {
+      path: "/admin/seatcategory/create",
+      name: "adminSeatCategoryCreate",
+      component: () => import("@/views/admin/seat/SeatCreateView.vue"),
+      meta: {
+        requiresAuth: true,
+        role: [managerRole, superAdminRole],
+      },
+    },
+    {
+      path: "/admin/seatcategory/edit/:id",
+      name: "adminSeatCategoryEdit",
+      component: SeatEditView,
+      meta: {
+        requiresAuth: true,
+        role: [managerRole, superAdminRole],
+      },
     },
   ],
 });

@@ -68,6 +68,7 @@
 
 <script>
 import NavbarAdmin from "@/components/NavbarAdmin.vue";
+import router from "@/router";
 import axios from "axios";
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -163,7 +164,8 @@ export default {
                 };
 
                 await axios.post(`${API_URL}/events/update/${this.eventId}`, formData, config);
-                alert('Form submitted successfully');
+                // alert('Form submitted successfully');
+                router.push({ name: 'events' });
             } catch (error) {
                 console.error(error);
                 alert('Error submitting form');

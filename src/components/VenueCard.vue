@@ -17,6 +17,9 @@
 <script>
 import IconLocation from "./icons/IconLocation.vue";
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+
 export default {
   components: {
     IconLocation
@@ -24,7 +27,7 @@ export default {
   data() {
     return {
       image_link: this.image
-        ? `http://127.0.0.1:8000${this.image}`
+        ? `${BASE_URL}${this.image}`
         : "/src/assets/noImage.png",
     };
   },

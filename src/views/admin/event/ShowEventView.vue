@@ -6,7 +6,7 @@
                 <div>
                     <div class="rounded-md overflow-hidden">
                         <img class="aspect-video object-cover w-full" :src="Array.isArray(event.event_image) && event.event_image.length > 0
-                            ? `http://127.0.0.1:8000${event.event_image[0].link}`
+                            ? `${BASE_URL}${event.event_image[0].link}`
                             : '/src/assets/noImage.png'" alt="Event Image" />
                     </div>
                     <h1 class="text-4xl text-indigo-900 font-semibold mt-4">{{ event.name }}</h1>
@@ -56,7 +56,7 @@
                         <h1 class="text-2xl font-semibold">Seat Map</h1>
                         <div class="w-full bg-amber-100 mt-5 rounded-lg overflow-hidden">
                             <img class="object-cover w-full" :src="event.seat_image
-                                ? `http://127.0.0.1:8000${event.seat_image}`
+                                ? `${BASE_URL}${event.seat_image}`
                                 : '/src/assets/noImage.png'" alt="Event Image" />
                         </div>
                     </div>
@@ -90,6 +90,7 @@ import IconLocation from "@/components/icons/IconLocation.vue";
 import axios from "axios";
 import router from "@/router";
 const API_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export default {
     components: {
@@ -122,7 +123,8 @@ export default {
             payment: "",
             ppn: "",
             isProcessing: false,
-            clientkey: import.meta.env.VITE_MIDTRANS_CLIENT_KEY
+            clientkey: import.meta.env.VITE_MIDTRANS_CLIENT_KEY,
+            BASE_URL: BASE_URL
         };
     },
     computed: {

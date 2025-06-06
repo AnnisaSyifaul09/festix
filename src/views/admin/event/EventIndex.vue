@@ -31,7 +31,7 @@
             class="shadow-lg hover:shadow-lg hover:shadow-indigo-500/30 transition duration-300" :event="event"
             :title="event.name" :date="event.date" :time="event.time"
             :image="Array.isArray(event.event_image) && event.event_image.length > 0 ? event.event_image[0].link : ''"
-            :location="event.vanue?.name" :id="event.id" @confirm-delete="confirmDelete" />
+            :location="event.vanue?.name" :id="event.id" @confirm-delete="openConfirmModal" />
         </div>
 
         <!-- Pagination -->
@@ -142,6 +142,10 @@ export default {
     this.getItem();
   },
   methods: {
+    openConfirmModal(id) {
+      this.confirmModal.id = id;
+      this.confirmModal.show = true;
+    },
     getItem() {
       this.isLoading = true;
       axios.get(`${API_URL}/events`, {
@@ -203,9 +207,13 @@ export default {
           "Content-Type": "multipart/form-data",
         },
       }).then(() => {
-        this.data = this.data.filter(e => e.id !== id);
+        // console.log('Data sebelum hapus:', this.data);
+        // this.data = JSON.parse(JSON.stringify(this.data.filter(e => e.id !== id)));
+        // console.log('Data setelah hapus:', this.data);
+        // this.applyFilters();
+        this.getItem();
         this.confirmModal.show = false;
-        this.applyFilters();
+        // this.applyFilters();
       }).catch((err) => {
         console.error("Error deleting event:", err);
         this.confirmModal.show = false;

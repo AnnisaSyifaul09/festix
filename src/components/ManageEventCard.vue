@@ -35,7 +35,7 @@
           class="flex-1 text-center text-xs py-1.5 bg-green-100 text-green-700 rounded-md hover:bg-green-200 transition">
           Edit
         </RouterLink>
-        <button @click="showConfirmModal = true"
+        <button @click="$emit('confirm-delete', id)"
           class="flex-1 text-center text-xs py-1.5 bg-red-100 text-red-600 rounded-md hover:bg-red-200 transition">
           Hapus
         </button>
@@ -70,6 +70,10 @@ import IconDate from "@/components/icons/IconDate.vue";
 import IconTime from "@/components/icons/IconTime.vue";
 import IconLocation from "@/components/icons/IconLocation.vue";
 import axios from "axios";
+
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+
 export default {
   props: {
     id: String,
@@ -82,7 +86,7 @@ export default {
   data() {
     return {
       image_link: this.image
-        ? `http://127.0.0.1:8000${this.image}`
+        ? `${BASE_URL}${this.image}`
         : "/src/assets/noImage.png",
       showConfirmModal: false, // kontrol modal
     };

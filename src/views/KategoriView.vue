@@ -14,7 +14,7 @@
         class="bg-white rounded-2xl shadow-lg overflow-hidden p-5 w-full max-w-[500px] flex flex-col hover:shadow-xl hover:shadow-indigo-500/20 transition-all"
         :to="{ name: 'detailEvent', params: { id: event.id } }">
         <img class="w-full h-48 object-cover rounded-lg" :src="Array.isArray(event.event_image) && event.event_image.length > 0
-          ? `http://127.0.0.1:8000${event.event_image[0].link}`
+          ? `${BASE_URL}${event.event_image[0].link}`
           : '/src/assets/noImage.png'" alt="Event Image" />
 
         <div class="mt-4">
@@ -90,6 +90,7 @@ import NavbarItem from '@/components/NavbarItem.vue';
 import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 
 export default {
@@ -103,6 +104,7 @@ export default {
       searchQuery: '',
       currentPage: 1,
       itemsPerPage: 9,
+      BASE_URL: BASE_URL
     };
   },
   computed: {

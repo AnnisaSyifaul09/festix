@@ -50,12 +50,15 @@ import IconDate from "@/components/icons/IconDate.vue";
 import IconTime from "@/components/icons/IconTime.vue";
 import IconLocation from "@/components/icons/IconLocation.vue";
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+
 export default {
     props: ["image", "title", "date", "time", "location", "status", "snapToken", "id"],
     data() {
         return {
             image_link: this.image
-                ? `http://127.0.0.1:8000${this.image}`
+                ? `${BASE_URL}${this.image}`
                 : "/src/assets/noImage.png",
         }
     },

@@ -162,7 +162,8 @@ export default {
                 };
 
                 await axios.post(`${API_URL}/events/create`, formData, config);
-                alert('Form submitted successfully');
+                // alert('Form submitted successfully');
+                this.$router.push('/admin/events'); // Redirect to events list after successful submission
             } catch (error) {
                 console.error(error);
                 alert('Error submitting form');

@@ -15,6 +15,11 @@
           class="font-semibold text-indigo-900 uppercase tracking-wide hover:text-indigo-700 transition-all">Events</a>
         <a href="/admin/venues"
           class="font-semibold text-indigo-900 uppercase tracking-wide hover:text-indigo-700 transition-all">Venue</a>
+        <a href="/admin/seatcategory"
+          class="font-semibold text-indigo-900 uppercase tracking-wide hover:text-indigo-700 transition-all">Seat
+          Category</a>
+        <a href="/admin/payments"
+          class="font-semibold text-indigo-900 uppercase tracking-wide hover:text-indigo-700 transition-all">Payment</a>
         <a href="/admin/verify"
           class="font-semibold text-indigo-900 uppercase tracking-wide hover:text-indigo-700 transition-all">Verify
           Ticket</a>

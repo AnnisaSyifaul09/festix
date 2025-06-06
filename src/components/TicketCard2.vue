@@ -48,6 +48,9 @@ import IconTime from "@/components/icons/IconTime.vue";
 import IconLocation from "@/components/icons/IconLocation.vue";
 import { RouterLink } from "vue-router";
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+
 export default {
     props: {
         image: String,
@@ -61,7 +64,7 @@ export default {
     data() {
         return {
             image_link: this.image
-                ? `http://127.0.0.1:8000${this.image}`
+                ? `${BASE_URL}${this.image}`
                 : "/src/assets/noImage.png",
         };
     },
