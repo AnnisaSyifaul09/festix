@@ -17,7 +17,7 @@
         </div>
 
         <div class="pt-4 w-full">
-          <ManageUserTable :users="paginatedUsers" @edit="handleEdit" @delete="handleDelete" />
+          <ManageUserTable :users="paginatedUsers" @edit="handleEdit" @delete="openConfirmModal" />
         </div>
 
         <div class="pt-8 flex justify-center">
@@ -25,6 +25,23 @@
             :class="['mx-1 px-3 py-1 rounded-md', currentPage === page ? 'bg-indigo-700 text-white' : 'bg-gray-200']">
             {{ page }}
           </button>
+        </div>
+      </div>
+      <div v-if="confirmModal.show"
+        class="fixed inset-0 bg-white/15 backdrop-blur-lg flex items-center justify-center z-50">
+        <div class="bg-white text-black rounded-xl p-6 w-full max-w-md shadow-xl">
+          <h2 class="text-xl font-bold mb-4">Are you sure?</h2>
+          <p class="mb-6">Do you really want to delete this user? This action cannot be undone.</p>
+          <div class="flex justify-end gap-3">
+            <button @click="confirmModal.show = false"
+              class="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100">
+              Cancel
+            </button>
+            <button @click="deleteEvent(confirmModal.id)"
+              class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-800">
+              Yes, Delete
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -51,7 +68,11 @@ export default {
       isLoading: true,
       searchQuery: '',
       currentPage: 1,
-      itemsPerPage: 5
+      itemsPerPage: 5,
+      confirmModal: {
+        show: false,
+        id: null,
+      },
     };
   },
   computed: {
@@ -79,9 +100,32 @@ export default {
     handleEdit(userId) {
       this.$router.push({ name: 'userEdit', params: { id: userId } });
     },
+    openConfirmModal(id) {
+      this.confirmModal.id = id;
+      this.confirmModal.show = true;
+    },
+    confirmDelete(id) {
+      this.confirmModal.id = id;
+      this.confirmModal.show = true;
+    },
     handleDelete(userId) {
       console.log('Delete user:', userId);
-      // Implement delete logic
+      // Implement delete functionality here
+      const formData = new FormData();
+      formData.append("_method", "delete");
+
+      axios.post(`${API_URL}/admin/users/delete/${userId}`, formData, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "multipart/form-data",
+        },
+      }).then(() => {
+        this.getItem();
+        this.confirmModal.show = false;
+      }).catch((err) => {
+        console.error("Error deleting:", err);
+        this.confirmModal.show = false;
+      });
     },
     handleSearch() {
       this.currentPage = 1;

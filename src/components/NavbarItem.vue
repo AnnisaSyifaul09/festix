@@ -29,7 +29,7 @@
         <div v-if="dropdownOpen"
           class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2 transition-all transform scale-95 origin-top-right z-50">
           <a href="/riwayat"
-            class="block px-4 py-2 text-indigo-900 hover:bg-indigo-100 hover:text-indigo-700 transition-all">Riwayat</a>
+            class="block px-4 py-2 text-indigo-900 hover:bg-indigo-100 hover:text-indigo-700 transition-all">History</a>
           <a href="/profile"
             class="block px-4 py-2 text-indigo-900 hover:bg-indigo-100 hover:text-indigo-700 transition-all">Settings</a>
           <button @click="logout"
@@ -49,9 +49,10 @@
     <div v-if="dropdownOpen" @click="closeDropdown" class="fixed inset-0"></div>
 
     <div v-if="mobileMenuOpen" class="md:hidden bg-white shadow-md p-4 absolute top-10 left-0 right-0">
-      <a href="/home" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">HOME</a>
-      <a href="#" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">EVENTS</a>
-      <a href="#" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">PLACES</a>
+      <a href="/" class="block py-2 uppercase text-indigo-900 font-semibold" @click="mobileMenuOpen = false">Home</a>
+      <a href="/kategori" class="block py-2 uppercase text-indigo-900 font-semibold"
+        @click="mobileMenuOpen = false">Events</a>
+      <!-- <a href="#" class="block py-2 text-indigo-900 font-semibold" @click="mobileMenuOpen = false">PLACES</a> -->
     </div>
   </nav>
 

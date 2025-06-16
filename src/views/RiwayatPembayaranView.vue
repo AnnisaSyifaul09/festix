@@ -1,6 +1,10 @@
 <template>
     <div>
         <NavbarItem />
+        <div v-if="showToast"
+            class="fixed top-4 right-4 bg-green-500 text-white px-4 py-3 rounded shadow z-50 transition-all duration-300">
+            Check your receipt in your email!
+        </div>
         <section class="py-12 px-6 md:px-0 max-w-screen-xl mx-auto">
             <div class="pt-15 p-2 min-h-screen flex flex-col">
                 <h1 class="text-2xl font-bold text-indigo-900 mb-8 text-left">PAYMENT HISTORY</h1>
@@ -16,7 +20,7 @@
                             : ''" :title="ticket.event_price.event.name" :date="ticket.event_price.event.date"
                             :time="ticket.event_price.event.time"
                             :location="ticket.event_price.event.vanue?.name || 'Unknown Venue'" :id="ticket.id"
-                            :status="ticket.status" :snapToken="ticket.snap_token" @pay="handlePay" />
+                            :status="ticket.status" :snapToken="ticket.snap_token" @recipt="recipt" />
                     </div>
 
                     <!-- Pagination -->
@@ -64,6 +68,7 @@ export default {
         return {
             data: [],
             loading: true,
+            showToast: false,
             currentPage: 1,
             itemsPerPage: 9,
             clientkey: import.meta.env.VITE_MIDTRANS_CLIENT_KEY,
@@ -159,7 +164,37 @@ export default {
                 onPending: result => console.log("Pending:", result),
                 onError: result => console.error("Payment Error:", result),
             });
-        }
+        },
+        recipt(id) {
+            const token = localStorage.getItem('token');
+            const username = localStorage.getItem('name');
+
+            if (!token || !username) {
+                router.push({ name: 'login' });
+                return;
+            }
+
+            axios.get(`${API_URL}/recipt/${id}`, {
+                headers: { Authorization: "Bearer " + token },
+            }).then(() => {
+                this.showToastMessage(); // Tampilkan notifikasi
+            }).catch((err) => {
+                if (err.response?.status === 401) {
+                    localStorage.clear();
+                    router.push({ name: 'login' });
+                } else {
+                    console.error("Error fetching receipt:", err);
+                }
+            });
+        },
+        showToastMessage() {
+            this.showToast = true;
+            setTimeout(() => {
+                this.showToast = false;
+            }, 4000); // 4 detik
+        },
+
+
     }
 };
 </script>

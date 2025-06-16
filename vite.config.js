@@ -16,6 +16,6 @@ export default defineConfig({
   server: {
     host: "0.0.0.0",
     port: 5173,
-    allowedHosts: ["722d-114-10-151-13.ngrok-free.app"], // pakai host sesuai URL ngrok kamu
+    allowedHosts: ["app.alvenorlando.site"], // pakai host sesuai URL ngrok kamu
   },
 });

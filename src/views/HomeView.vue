@@ -107,6 +107,7 @@ export default {
         },
       }).then((res) => {
         if (res.data?.data) {
+          console.log("Events data:", res);
           this.data_events = res.data.data;
         }
       }).catch((err) => {

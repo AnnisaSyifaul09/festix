@@ -36,9 +36,14 @@
                     {{ status }}
                 </span>
 
-                <button v-if="status === 'pending'" @click="$emit('pay', { id, snapToken })"
+                <!-- <button v-if="status === 'pending'" @click="$emit('pay', { id, snapToken })"
                     class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-xs font-medium px-4 py-2 rounded-lg shadow hover:brightness-110 transition">
                     Pay Now
+                </button> -->
+
+                <button @click="$emit('recipt', id)"
+                    class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-xs font-medium px-4 py-2 rounded-lg shadow hover:brightness-110 transition">
+                    Cek Recipt
                 </button>
             </div>
         </div>
